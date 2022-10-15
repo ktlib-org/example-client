@@ -1,0 +1,2532 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "An API",
+    "version": "1663451963"
+  },
+  "paths": {
+    "/status": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Returns status of API",
+        "operationId": "status",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Loads the current user",
+        "operationId": "currentUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates the user's information",
+        "operationId": "updateUserInfo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sends an email validation to the user",
+        "operationId": "signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signup"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/verify-email": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Verifies the users email and logs them in",
+        "operationId": "verifyEmail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/forgot-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Sends an email to the user to reset their password",
+        "operationId": "forgotPassword",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/token-login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs a user in with the specified token",
+        "operationId": "tokenLogin",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs a user in with the specified email and password",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/update-password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Updates the user's password",
+        "operationId": "updatePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs the user out",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/user/accept-invite": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Accepts an invite to an organization with the given token",
+        "operationId": "acceptInvite",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Returns an organization",
+        "operationId": "show",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Creates a new organization for the logged in user",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Updates an organization",
+        "operationId": "update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization/invite": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Sends an email inviting a user to an organization",
+        "operationId": "invite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserValidationData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization/invites": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Returns invites for an organization",
+        "operationId": "invites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserValidationData"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization/invites/{inviteId}": {
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Removes an invite to a user",
+        "operationId": "removeInvite",
+        "parameters": [
+          {
+            "name": "inviteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/organization/users": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Returns users for an organization",
+        "operationId": "users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationUserData"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organization/users/{orgUserId}": {
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Removes a user from an organization",
+        "operationId": "removeUser",
+        "parameters": [
+          {
+            "name": "orgUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "Changes role of a user",
+        "operationId": "updateUserRole",
+        "parameters": [
+          {
+            "name": "orgUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRoleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/g1QWbnUW9WP3g0lB": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Returns true if user is employee",
+        "operationId": "isEmployee",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/organizations": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Returns all organization",
+        "operationId": "organizations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationData"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/users": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Returns all users",
+        "operationId": "users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDataAll"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/user-logins": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Returns user logins",
+        "operationId": "userLogins",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserLoginInfo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Creates a Login for a User",
+        "operationId": "createUserLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employee/user-logins/revert-to-parent": {
+      "get": {
+        "tags": [
+          "Employee"
+        ],
+        "summary": "Reverts to the parent UserLogin",
+        "operationId": "revertToParent",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLogin"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StatusResult": {
+        "required": [
+          "up"
+        ],
+        "type": "object",
+        "properties": {
+          "up": {
+            "type": "boolean"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "boolean"
+            }
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "CurrentUserData": {
+        "required": [
+          "createdAt",
+          "email",
+          "firstName",
+          "id",
+          "lastName",
+          "passwordSet",
+          "roles",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "passwordSet": {
+            "type": "boolean"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrentUserRoleData"
+            }
+          }
+        }
+      },
+      "CurrentUserRoleData": {
+        "required": [
+          "organizationId",
+          "organizationName",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "organizationName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          }
+        }
+      },
+      "UserUpdate": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "Signup": {
+        "required": [
+          "email"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "UserLoginData": {
+        "required": [
+          "createdAt",
+          "id",
+          "token",
+          "updatedAt",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "LoginData": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResult": {
+        "required": [
+          "loginFailed",
+          "userLocked"
+        ],
+        "type": "object",
+        "properties": {
+          "userLocked": {
+            "type": "boolean"
+          },
+          "loginFailed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PasswordData": {
+        "required": [
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ValidationError": {
+        "required": [
+          "field",
+          "message"
+        ],
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "OrganizationData": {
+        "required": [
+          "createdAt",
+          "id",
+          "name",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "OrganizationCreate": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "OrganizationUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "InviteCreate": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "UserValidationData": {
+        "required": [
+          "createdAt",
+          "email",
+          "firstName",
+          "id",
+          "lastName",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "OrganizationUserData": {
+        "required": [
+          "email",
+          "firstName",
+          "id",
+          "lastName",
+          "role",
+          "since",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "since": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          }
+        }
+      },
+      "UserRoleUpdate": {
+        "required": [
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          }
+        }
+      },
+      "UserDataAll": {
+        "required": [
+          "email",
+          "employee",
+          "enabled",
+          "firstName",
+          "id",
+          "lastName",
+          "locked",
+          "passwordFailures",
+          "passwordSet",
+          "roles"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "employee": {
+            "type": "boolean"
+          },
+          "passwordSet": {
+            "type": "boolean"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "passwordFailures": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRoleData"
+            }
+          }
+        }
+      },
+      "UserRoleData": {
+        "required": [
+          "createdAt",
+          "organizationId",
+          "role",
+          "updatedAt",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserLoginInfo": {
+        "required": [
+          "email",
+          "employee",
+          "firstName",
+          "id",
+          "lastName",
+          "userId",
+          "valid"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "valid": {
+            "type": "boolean"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "employee": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateUserLogin": {
+        "required": [
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "KCallableObject": {
+        "required": [
+          "abstract",
+          "annotations",
+          "final",
+          "name",
+          "open",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassObject": {
+        "required": [
+          "abstract",
+          "annotations",
+          "companion",
+          "constructors",
+          "data",
+          "final",
+          "fun",
+          "inner",
+          "members",
+          "open",
+          "sealed",
+          "sealedSubclasses",
+          "supertypes",
+          "typeParameters",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "simpleName": {
+            "type": "string"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "constructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KFunctionObject"
+            }
+          },
+          "sealed": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KCallableObject"
+            }
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "inner": {
+            "type": "boolean"
+          },
+          "fun": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "objectInstance": {
+            "type": "object"
+          },
+          "supertypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "sealedSubclasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassObject"
+            }
+          },
+          "companion": {
+            "type": "boolean"
+          },
+          "qualifiedName": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassOrganization": {
+        "required": [
+          "abstract",
+          "annotations",
+          "companion",
+          "constructors",
+          "data",
+          "final",
+          "fun",
+          "inner",
+          "members",
+          "nestedClasses",
+          "open",
+          "sealed",
+          "sealedSubclasses",
+          "supertypes",
+          "typeParameters",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "simpleName": {
+            "type": "string"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "constructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KFunctionOrganization"
+            }
+          },
+          "sealed": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KCallableObject"
+            }
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "inner": {
+            "type": "boolean"
+          },
+          "fun": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "nestedClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassObject"
+            }
+          },
+          "objectInstance": {
+            "$ref": "#/components/schemas/Organization"
+          },
+          "supertypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "sealedSubclasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassOrganization"
+            }
+          },
+          "companion": {
+            "type": "boolean"
+          },
+          "qualifiedName": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassOrganizationUser": {
+        "required": [
+          "abstract",
+          "annotations",
+          "companion",
+          "constructors",
+          "data",
+          "final",
+          "fun",
+          "inner",
+          "members",
+          "nestedClasses",
+          "open",
+          "sealed",
+          "sealedSubclasses",
+          "supertypes",
+          "typeParameters",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "simpleName": {
+            "type": "string"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "constructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KFunctionOrganizationUser"
+            }
+          },
+          "sealed": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KCallableObject"
+            }
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "inner": {
+            "type": "boolean"
+          },
+          "fun": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "nestedClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassObject"
+            }
+          },
+          "objectInstance": {
+            "$ref": "#/components/schemas/OrganizationUser"
+          },
+          "supertypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "sealedSubclasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassOrganizationUser"
+            }
+          },
+          "companion": {
+            "type": "boolean"
+          },
+          "qualifiedName": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassUser": {
+        "required": [
+          "abstract",
+          "annotations",
+          "companion",
+          "constructors",
+          "data",
+          "final",
+          "fun",
+          "inner",
+          "members",
+          "nestedClasses",
+          "open",
+          "sealed",
+          "sealedSubclasses",
+          "supertypes",
+          "typeParameters",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "simpleName": {
+            "type": "string"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "constructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KFunctionUser"
+            }
+          },
+          "sealed": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KCallableObject"
+            }
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "inner": {
+            "type": "boolean"
+          },
+          "fun": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "nestedClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassObject"
+            }
+          },
+          "objectInstance": {
+            "$ref": "#/components/schemas/User"
+          },
+          "supertypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "sealedSubclasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassUser"
+            }
+          },
+          "companion": {
+            "type": "boolean"
+          },
+          "qualifiedName": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassUserLogin": {
+        "required": [
+          "abstract",
+          "annotations",
+          "companion",
+          "constructors",
+          "data",
+          "final",
+          "fun",
+          "inner",
+          "members",
+          "nestedClasses",
+          "open",
+          "sealed",
+          "sealedSubclasses",
+          "supertypes",
+          "typeParameters",
+          "value"
+        ],
+        "type": "object",
+        "properties": {
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "simpleName": {
+            "type": "string"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "constructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KFunctionUserLogin"
+            }
+          },
+          "sealed": {
+            "type": "boolean"
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KCallableObject"
+            }
+          },
+          "data": {
+            "type": "boolean"
+          },
+          "inner": {
+            "type": "boolean"
+          },
+          "fun": {
+            "type": "boolean"
+          },
+          "value": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "nestedClasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassObject"
+            }
+          },
+          "objectInstance": {
+            "$ref": "#/components/schemas/UserLogin"
+          },
+          "supertypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "sealedSubclasses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KClassUserLogin"
+            }
+          },
+          "companion": {
+            "type": "boolean"
+          },
+          "qualifiedName": {
+            "type": "string"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KClassifier": {
+        "type": "object"
+      },
+      "KFunctionObject": {
+        "required": [
+          "abstract",
+          "annotations",
+          "external",
+          "final",
+          "infix",
+          "inline",
+          "name",
+          "open",
+          "operator",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "inline": {
+            "type": "boolean"
+          },
+          "operator": {
+            "type": "boolean"
+          },
+          "infix": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KFunctionOrganization": {
+        "required": [
+          "abstract",
+          "annotations",
+          "external",
+          "final",
+          "infix",
+          "inline",
+          "name",
+          "open",
+          "operator",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "inline": {
+            "type": "boolean"
+          },
+          "operator": {
+            "type": "boolean"
+          },
+          "infix": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KFunctionOrganizationUser": {
+        "required": [
+          "abstract",
+          "annotations",
+          "external",
+          "final",
+          "infix",
+          "inline",
+          "name",
+          "open",
+          "operator",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "inline": {
+            "type": "boolean"
+          },
+          "operator": {
+            "type": "boolean"
+          },
+          "infix": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KFunctionUser": {
+        "required": [
+          "abstract",
+          "annotations",
+          "external",
+          "final",
+          "infix",
+          "inline",
+          "name",
+          "open",
+          "operator",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "inline": {
+            "type": "boolean"
+          },
+          "operator": {
+            "type": "boolean"
+          },
+          "infix": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KFunctionUserLogin": {
+        "required": [
+          "abstract",
+          "annotations",
+          "external",
+          "final",
+          "infix",
+          "inline",
+          "name",
+          "open",
+          "operator",
+          "parameters",
+          "returnType",
+          "suspend",
+          "typeParameters"
+        ],
+        "type": "object",
+        "properties": {
+          "inline": {
+            "type": "boolean"
+          },
+          "operator": {
+            "type": "boolean"
+          },
+          "infix": {
+            "type": "boolean"
+          },
+          "suspend": {
+            "type": "boolean"
+          },
+          "external": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "typeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeParameter"
+            }
+          },
+          "returnType": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "open": {
+            "type": "boolean"
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KParameter"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "abstract": {
+            "type": "boolean"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PUBLIC",
+              "PROTECTED",
+              "INTERNAL",
+              "PRIVATE"
+            ]
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KParameter": {
+        "required": [
+          "annotations",
+          "index",
+          "kind",
+          "optional",
+          "type",
+          "vararg"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "$ref": "#/components/schemas/KType"
+          },
+          "index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "INSTANCE",
+              "EXTENSION_RECEIVER",
+              "VALUE"
+            ]
+          },
+          "optional": {
+            "type": "boolean"
+          },
+          "vararg": {
+            "type": "boolean"
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KType": {
+        "required": [
+          "annotations",
+          "arguments",
+          "markedNullable"
+        ],
+        "type": "object",
+        "properties": {
+          "classifier": {
+            "$ref": "#/components/schemas/KClassifier"
+          },
+          "markedNullable": {
+            "type": "boolean"
+          },
+          "arguments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KTypeProjection"
+            }
+          },
+          "annotations": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "KTypeParameter": {
+        "required": [
+          "name",
+          "reified",
+          "upperBounds",
+          "variance"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "reified": {
+            "type": "boolean"
+          },
+          "upperBounds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KType"
+            }
+          },
+          "variance": {
+            "type": "string",
+            "enum": [
+              "INVARIANT",
+              "IN",
+              "OUT"
+            ]
+          }
+        }
+      },
+      "KTypeProjection": {
+        "type": "object",
+        "properties": {
+          "variance": {
+            "type": "string",
+            "enum": [
+              "INVARIANT",
+              "IN",
+              "OUT"
+            ]
+          },
+          "type": {
+            "$ref": "#/components/schemas/KType"
+          }
+        }
+      },
+      "Organization": {
+        "required": [
+          "createdAt",
+          "entityClass",
+          "id",
+          "name",
+          "properties",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "entityClass": {
+            "$ref": "#/components/schemas/KClassOrganization"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "OrganizationUser": {
+        "required": [
+          "createdAt",
+          "entityClass",
+          "id",
+          "organization",
+          "organizationId",
+          "properties",
+          "role",
+          "updatedAt",
+          "user",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "organization": {
+            "$ref": "#/components/schemas/Organization"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "entityClass": {
+            "$ref": "#/components/schemas/KClassOrganizationUser"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Admin",
+              "Owner"
+            ]
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "organizationId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "User": {
+        "required": [
+          "createdAt",
+          "email",
+          "entityClass",
+          "firstName",
+          "fullName",
+          "id",
+          "lastName",
+          "properties",
+          "roles",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrganizationUser"
+            }
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "entityClass": {
+            "$ref": "#/components/schemas/KClassUser"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "email": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "UserLogin": {
+        "required": [
+          "createdAt",
+          "entityClass",
+          "id",
+          "properties",
+          "token",
+          "updatedAt",
+          "user",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "entityClass": {
+            "$ref": "#/components/schemas/KClassUserLogin"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}

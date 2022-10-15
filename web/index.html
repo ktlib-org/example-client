@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-gray-100">
+  <head>
+    <meta charset="utf-8" />
+    <title>My App</title>
+    <meta name="Description" id="meta-description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <meta name="apple-mobile-web-app-capable" content="no" />
+    <meta http-equiv="x-ua-compatible" content="IE=Edge" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="shortcut icon" href="/img/icon.png" type="image/png" />
+    <link rel="icon" href="/img/icon.png" sizes="60x60" type="image/png" />
+    <script>
+      var buildTime = "BUILD_TIME";
+    </script>
+    <style>
+      #loader {
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        position: absolute;
+        top: 80px;
+      }
+    </style>
+  </head>
+  <body class="h-full">
+    <div id="app">
+      <div id="loader" style="margin: auto; width: 100%; text-align: center;">
+        <div style="border: 2px solid #bbb; width: 400px; padding: 20px; border-radius: 5px; margin: auto;">
+        <div style="display: inline-block;"><img width="26x" src="/img/loading.gif" /></div>
+        <div style="display: inline-block;font-size: 28px; padding-left: 5px">Application Loading...</div>
+        </div>
+      </div>
+  </div>
+    <script type="module" src="/src/app.tsx"></script>
+  </body>
+</html>

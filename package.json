@@ -1,0 +1,40 @@
+{
+  "name": "react-base",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "core",
+    "mobile",
+    "web"
+  ],
+  "scripts": {
+    "postinstall": "yarn workspace core run env && yarn genApi",
+    "test": "yarn core.test && yarn web.test && yarn mobile.test",
+    "core.test": "yarn workspace core run test",
+    "web.test": "yarn workspace web run test",
+    "mobile.test": "yarn workspace mobile run test",
+    "tsc": "yarn workspace core run tsc && yarn workspace web run tsc && yarn workspace mobile run tsc",
+    "updateOpenApi": "yarn workspace core run updateOpenApi && yarn genApi",
+    "genApi": "yarn workspace core run genApi",
+    "env.local": "yarn workspace core run env.local",
+    "env.dev": "yarn workspace core run env.dev",
+    "env.prod": "yarn workspace core run env.prod",
+    "web.start": "yarn workspace web run start",
+    "web.local": "yarn env.local && web.start",
+    "web.dev": "yarn env.dev && web.start",
+    "web.prod": "yarn env.prod && web.start",
+    "web.build": "yarn workspace web run build",
+    "web.preview": "yarn workspace web run preview",
+    "mobile.start": "yarn workspace mobile run start",
+    "mobile.start.clear": "yarn workspace mobile run start.clear",
+    "mobile.ios": "yarn workspace mobile run ios",
+    "mobile.android": "yarn workspace mobile run android"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.5"
+  },
+  "resolutions": {
+    "@types/react": "^17.0.44"
+  },
+  "packageManager": "yarn@3.2.0"
+}

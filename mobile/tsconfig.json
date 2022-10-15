@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.json",
+    "compilerOptions": {
+      "jsx": "react-native",
+      "esModuleInterop": true,
+      "allowJs": true,
+      "baseUrl": "./src",
+      "paths": {
+        "core/*": ["../../core/src/*"]
+      },
+    },
+    "exclude": ["node_modules", "babel.config.js", "metro.config.js"],
+    "include": ["./src", "./test"]
+  }

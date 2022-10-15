@@ -1,0 +1,26 @@
+name: Node.js CI
+
+on: push
+
+jobs:
+  build:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install --frozen-lockfile
+      - name: Create Environment File
+        run: yarn test
+      - name: Unit Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Unit Test Results
+          path: "**/test/junit.xml"
+          reporter: jest-junit
