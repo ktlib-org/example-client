@@ -1,34 +1,35 @@
 import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import Button from "components/button";
-import { ModalStore } from "core/stores";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
-
-const state = ModalStore.confirmation;
+import { AppStore } from "core/stores/app-store";
+import { useStore } from "core/react-utils";
 
 const ConfirmationModal = observer(() => {
+  const { confirmation } = useStore(AppStore);
+
   return (
     <Modal
-      open={state.open}
-      title={state.state.header}
+      open={confirmation.open}
+      title={confirmation.state.header}
       buttons={[
         <Button
           key={1}
-          color={state.state.okColor || "blue"}
-          onClick={() => state.hide(true)}
-          text={state.state.okText || "OK"}
+          color={confirmation.state.okColor || "blue"}
+          onClick={() => confirmation.hide(true)}
+          text={confirmation.state.okText || "OK"}
           Icon={CheckIcon}
         />,
         <Button
           key={0}
-          color={state.state.cancelColor || "gray"}
-          onClick={() => state.hide(false)}
-          text={state.state.cancelText || "Cancel"}
+          color={confirmation.state.cancelColor || "gray"}
+          onClick={() => confirmation.hide(false)}
+          text={confirmation.state.cancelText || "Cancel"}
           Icon={XIcon}
         />,
       ]}
     >
-      {state.state.message}
+      {confirmation.state.message}
     </Modal>
   );
 });

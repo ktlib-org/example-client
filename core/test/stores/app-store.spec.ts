@@ -7,20 +7,20 @@ import SignupForm from "core/models/forms/signup-form";
 import UserProfileForm from "core/models/forms/user-profile-form";
 import { CurrentUser, CurrentUserRole } from "core/models/user";
 import { getUserToken, setUserToken } from "core/storage";
-import { AppStoreClass } from "core/stores/app-store";
+import { AppStore } from "core/stores/app-store";
 
-let AppStore: AppStoreClass;
+let appStore: AppStore;
 
 describe("AppStore", () => {
   beforeEach(() => {
-    AppStore = new AppStoreClass(() => null);
+    appStore = new AppStore(() => null);
     EmployeeService.isEmployee = jest.fn().mockReturnValue(false);
   });
 
   describe("initialize", () => {
     it("should set the OpenAPI stuff on create", async () => {
-      AppStore.userToken = "mytoken";
-      AppStore.currentRole = new CurrentUserRole({ organizationId: 4 });
+      appStore.userToken = "mytoken";
+      appStore.currentRole = new CurrentUserRole({ organizationId: 4 });
 
       expect(OpenAPI.BASE).toEqual(API_URL);
       expect(await (OpenAPI.TOKEN as any)()).toEqual("mytoken");
@@ -28,7 +28,7 @@ describe("AppStore", () => {
     });
 
     it("should not have headers if no org is selected", async () => {
-      AppStore.currentRole = null;
+      appStore.currentRole = null;
 
       expect(await (OpenAPI.HEADERS as any)()).toEqual({});
     });
@@ -37,27 +37,27 @@ describe("AppStore", () => {
       UserService.currentUser = jest.fn().mockReturnValue({ id: 1, roles: [{ organizationId: 1 }] });
       await setUserToken("anotherToken");
 
-      await AppStore.initialize();
+      await appStore.initialize();
 
-      expect(AppStore.currentUser).toEqual(
+      expect(appStore.currentUser).toEqual(
         new CurrentUser({ id: 1, roles: [new CurrentUserRole({ organizationId: 1 })] }),
       );
       expect(UserService.currentUser).toBeCalled();
-      expect(AppStore.userToken).toEqual("anotherToken");
-      expect(AppStore.isEmployee).toBe(false);
+      expect(appStore.userToken).toEqual("anotherToken");
+      expect(appStore.isEmployee).toBe(false);
     });
 
     it("sets current user to null when function errors", async () => {
-      AppStore.currentUser = new CurrentUser({ id: 1 });
-      AppStore.userToken = "blah";
+      appStore.currentUser = new CurrentUser({ id: 1 });
+      appStore.userToken = "blah";
       UserService.currentUser = () => {
         throw "blah";
       };
 
-      await AppStore.initialize();
+      await appStore.initialize();
 
-      expect(AppStore.currentUser).toBe(null);
-      expect(AppStore.userToken).toBe(null);
+      expect(appStore.currentUser).toBe(null);
+      expect(appStore.userToken).toBe(null);
     });
 
     it("should set isEmployee", async () => {
@@ -65,19 +65,19 @@ describe("AppStore", () => {
       UserService.currentUser = jest.fn().mockReturnValue({ id: 1, roles: [{ organizationId: 1 }] });
       await setUserToken("anotherToken");
 
-      await AppStore.initialize();
+      await appStore.initialize();
 
-      expect(AppStore.isEmployee).toBe(true);
+      expect(appStore.isEmployee).toBe(true);
     });
   });
 
   describe("clear", () => {
     it("clears data", () => {
-      AppStore.currentUser = new CurrentUser();
+      appStore.currentUser = new CurrentUser();
 
-      AppStore.clear();
+      appStore.clear();
 
-      expect(AppStore.currentUser).toBe(null);
+      expect(appStore.currentUser).toBe(null);
     });
   });
 
@@ -89,10 +89,10 @@ describe("AppStore", () => {
       form.email = "any@email.com";
       form.password = "here";
 
-      await AppStore.login(form);
+      await appStore.login(form);
 
-      expect(AppStore.userToken).toEqual("newToken");
-      expect(AppStore.currentUser).toEqual(new CurrentUser({ id: 1 }));
+      expect(appStore.userToken).toEqual("newToken");
+      expect(appStore.currentUser).toEqual(new CurrentUser({ id: 1 }));
       expect(await getUserToken()).toEqual("newToken");
     });
 
@@ -103,10 +103,10 @@ describe("AppStore", () => {
       form.email = "any@email.com";
       form.password = "here";
 
-      const result = await AppStore.login(form);
+      const result = await appStore.login(form);
 
-      expect(AppStore.userToken).toEqual(null);
-      expect(AppStore.currentUser).toEqual(null);
+      expect(appStore.userToken).toEqual(null);
+      expect(appStore.currentUser).toEqual(null);
       expect(result.loginFailed).toEqual(true);
     });
   });
@@ -114,13 +114,13 @@ describe("AppStore", () => {
   describe("logout", () => {
     it("should clear data on logout", async () => {
       UserService.logout = () => null;
-      AppStore.currentUser = new CurrentUser();
+      appStore.currentUser = new CurrentUser();
       await setUserToken("myKey");
 
-      await AppStore.logout();
+      await appStore.logout();
 
       expect(await getUserToken()).toEqual(null);
-      expect(AppStore.currentUser).toEqual(null);
+      expect(appStore.currentUser).toEqual(null);
     });
   });
 
@@ -128,18 +128,18 @@ describe("AppStore", () => {
     it("should set organization if there is one", async () => {
       UserService.currentUser = jest.fn().mockReturnValue({ id: 1, roles: [{ organizationId: 3 }] });
 
-      await AppStore.loadCurrentUser();
+      await appStore.loadCurrentUser();
 
-      expect(AppStore.currentRole.organizationId).toEqual(3);
+      expect(appStore.currentRole.organizationId).toEqual(3);
     });
 
     it("should not set organization if there is one", async () => {
       UserService.currentUser = jest.fn().mockReturnValue({ id: 1, roles: [] });
-      AppStore.currentRole = null;
+      appStore.currentRole = null;
 
-      await AppStore.loadCurrentUser();
+      await appStore.loadCurrentUser();
 
-      expect(AppStore.currentRole).toEqual(null);
+      expect(appStore.currentRole).toEqual(null);
     });
   });
 
@@ -149,7 +149,7 @@ describe("AppStore", () => {
       const emailForm = new EmailForm();
       emailForm.email = "myemail@email.com";
 
-      await AppStore.forgotPassword(emailForm);
+      await appStore.forgotPassword(emailForm);
 
       expect(UserService.forgotPassword).toBeCalled();
     });
@@ -163,7 +163,7 @@ describe("AppStore", () => {
       form.firstName = "first";
       form.lastName = "last";
 
-      await AppStore.signup(form);
+      await appStore.signup(form);
 
       expect(UserService.signup).toBeCalled();
     });
@@ -174,11 +174,11 @@ describe("AppStore", () => {
       UserService.verifyEmail = jest.fn().mockReturnValue({ token: "usertoken" });
       UserService.currentUser = jest.fn().mockReturnValue({ id: 11, roles: [{ organizationId: 3 }] });
 
-      await AppStore.verifyEmail("token");
+      await appStore.verifyEmail("token");
 
       expect(UserService.verifyEmail).toBeCalled();
-      expect(AppStore.currentUser).toBeTruthy();
-      expect(AppStore.currentRole).toBeTruthy();
+      expect(appStore.currentUser).toBeTruthy();
+      expect(appStore.currentRole).toBeTruthy();
     });
   });
 
@@ -187,24 +187,24 @@ describe("AppStore", () => {
       UserService.tokenLogin = jest.fn().mockReturnValue({ token: "usertoken" });
       UserService.currentUser = jest.fn().mockReturnValue({ id: 11, roles: [{ organizationId: 3 }] });
 
-      await AppStore.tokenLogin("token");
+      await appStore.tokenLogin("token");
 
       expect(UserService.tokenLogin).toBeCalled();
-      expect(AppStore.currentUser).toBeTruthy();
-      expect(AppStore.currentRole).toBeTruthy();
+      expect(appStore.currentUser).toBeTruthy();
+      expect(appStore.currentRole).toBeTruthy();
     });
   });
 
   describe("acceptInvite", () => {
-    it("should call the api, log the user in, and relaod current user", async () => {
+    it("should call the api, log the user in, and reload current user", async () => {
       UserService.acceptInvite = jest.fn().mockReturnValue({ token: "usertoken" });
       UserService.currentUser = jest.fn().mockReturnValue({ id: 444, roles: [{ organizationId: 555 }] });
 
-      await AppStore.acceptInvite("token");
+      await appStore.acceptInvite("token");
 
       expect(UserService.acceptInvite).toBeCalled();
-      expect(AppStore.currentUser.id).toEqual(444);
-      expect(AppStore.currentRole.organizationId).toEqual(555);
+      expect(appStore.currentUser.id).toEqual(444);
+      expect(appStore.currentRole.organizationId).toEqual(555);
     });
   });
 
@@ -215,7 +215,7 @@ describe("AppStore", () => {
       form.password = "updatedPassword";
       form.passwordConfirm = form.password;
 
-      await AppStore.updatePassword(form);
+      await appStore.updatePassword(form);
 
       expect(UserService.updatePassword).toBeCalled();
     });
@@ -228,10 +228,10 @@ describe("AppStore", () => {
       form.firstName = "first";
       form.lastName = "last";
 
-      await AppStore.updateUserInfo(form);
+      await appStore.updateUserInfo(form);
 
       expect(UserService.updateUserInfo).toBeCalled();
-      expect(AppStore.currentUser.id).toEqual(33);
+      expect(appStore.currentUser.id).toEqual(33);
     });
   });
 });

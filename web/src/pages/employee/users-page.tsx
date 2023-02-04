@@ -1,18 +1,20 @@
 import Table from "components/table";
 import { EMPTY_FUNC } from "core/constants";
-import { useInitialEffect } from "core/react-utils";
-import { EmplloyeeStore } from "core/stores";
+import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
+import { EmployeeStore } from "core/stores/employee-store";
 
 const UsersPage = observer(() => {
+  const employeeStore = useStore(EmployeeStore);
+
   useInitialEffect(() => {
-    EmplloyeeStore.loadUsers();
+    employeeStore.loadUsers();
   });
 
   return (
     <Table
       title="Users"
-      data={EmplloyeeStore.users}
+      data={employeeStore.users}
       columns={[
         { name: "name", header: "Name", row: (u) => u.fullName },
         { name: "email", header: "Email", row: (u) => u.email },

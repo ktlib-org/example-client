@@ -4,25 +4,30 @@ import Button from "components/button";
 import Form from "components/form/form";
 import Input from "components/form/input";
 import PasswordForm from "core/models/forms/password-form";
-import { AppStore, ModalStore } from "core/stores";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
+import { ModalState } from "core/stores/store";
+import { useStore } from "core/react-utils";
+import { AppStore } from "core/stores/app-store";
 
 const form = new PasswordForm();
-ModalStore.updatePassword.onHidden = () => {
+export const updatePasswordModalState = new ModalState<void, void>();
+
+updatePasswordModalState.onHidden = () => {
   form.clearFormData();
 };
 
 const UpdatePasswordModal = observer(() => {
-  const { hide, open } = ModalStore.updatePassword;
+  const appStore = useStore(AppStore);
+  const { hide, open } = updatePasswordModalState;
   const save = async () => {
-    await AppStore.updatePassword(form);
+    await appStore.updatePassword(form);
     hide();
   };
 
   return (
     <Modal
-      open={open || !AppStore.currentUser.passwordSet}
+      open={open || !appStore.currentUser.passwordSet}
       title="Update Password"
       buttons={[
         <Button key={1} color="green" onClick={save} text="Update" Icon={UploadIcon} submitting={form.isSubmitting} />,

@@ -2,12 +2,15 @@ import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import Table from "components/table";
 import { Invite, OrganizationUser } from "core/models/organization";
-import { AppStore, ModalStore, OrganizationStore } from "core/stores";
 import { observer } from "mobx-react-lite";
+import { useStore } from "core/react-utils";
+import { AppStore } from "core/stores/app-store";
+import { OrganizationStore } from "core/stores/organization-store";
+import { inviteModalState } from "../components/modals/invite-modal";
 
 const UsersPage = observer(() => {
-  const { currentUser } = AppStore;
-  const { confirmation } = ModalStore;
+  const { currentUser, confirmation } = useStore(AppStore);
+  const organizationStore = useStore(OrganizationStore);
 
   const deleteUser = (orgUser: OrganizationUser) => {
     confirmation.show(
@@ -17,7 +20,7 @@ const UsersPage = observer(() => {
         okColor: "red",
         okText: "Remove",
       },
-      (result) => result && OrganizationStore.removeUser(orgUser.id),
+      (result) => result && organizationStore.removeUser(orgUser.userId),
     );
   };
 
@@ -29,7 +32,7 @@ const UsersPage = observer(() => {
         okColor: "red",
         okText: "Remove",
       },
-      (result) => result && OrganizationStore.removeInvite(invite.id),
+      (result) => result && organizationStore.removeInvite(invite.id),
     );
   };
 
@@ -37,7 +40,7 @@ const UsersPage = observer(() => {
     <div>
       <Table
         title="Users"
-        data={OrganizationStore.users}
+        data={organizationStore.users}
         columns={[
           { name: "name", header: "Name", row: (u) => u.fullName },
           { name: "email", header: "Email", row: (u) => u.email },
@@ -53,12 +56,12 @@ const UsersPage = observer(() => {
         ]}
       />
       <div className="my-7">
-        <Button color="green" Icon={PlusIcon} text="Add User" onClick={ModalStore.invite.show} />
+        <Button color="green" Icon={PlusIcon} text="Add User" onClick={inviteModalState.show} />
       </div>
-      {OrganizationStore.invites.length > 0 && (
+      {organizationStore.invites.length > 0 && (
         <Table
           title="Open Invitations"
-          data={OrganizationStore.invites}
+          data={organizationStore.invites}
           columns={[
             { name: "name", header: "Name", row: (u) => u.fullName },
             { name: "email", header: "Email", row: (u) => u.email },

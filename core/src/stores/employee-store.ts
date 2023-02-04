@@ -1,24 +1,24 @@
 import { EmployeeService } from "core/api";
 import { User } from "core/models/employee";
 import { Organization } from "core/models/organization";
-import { toTypeList } from "core/serialization";
+import { promiseTypeList } from "core/serialization";
 import { observable, runInAction } from "mobx";
 import { Store } from "./store";
 
-export class EmployeeStoreClass extends Store {
+export class EmployeeStore extends Store {
   @observable organizations: Organization[] = [];
   @observable users: User[] = [];
 
   async loadOrganizations() {
-    const result = await EmployeeService.organizations();
+    const result = await promiseTypeList(EmployeeService.organizations(), Organization);
 
-    return runInAction(() => (this.organizations = toTypeList(result, Organization)));
+    return runInAction(() => (this.organizations = result));
   }
 
   async loadUsers() {
-    const result = await EmployeeService.users();
+    const result = await promiseTypeList(EmployeeService.users() as any, User);
 
-    return runInAction(() => (this.users = toTypeList(result as any, User)));
+    return runInAction(() => (this.users = result));
   }
 
   async clear() {

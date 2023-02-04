@@ -1,5 +1,7 @@
 import { DependencyList, useEffect as useEffectReact, useRef } from "react";
 import { autoRerun } from "./utils";
+import { getStore } from "core/stores";
+import { Store } from "core/stores/store";
 
 type UnloadEffect = () => void | undefined | Promise<void>;
 type EffectCallback = () => void | Promise<void> | UnloadEffect;
@@ -23,19 +25,23 @@ export function rerunWhileComponentLoaded(action: () => any, frequencyInSeconds:
 export function useRequestTracker() {
   const tracker = useRef(0);
   return {
-    startReqeust: () => (tracker.current = Math.random()),
+    startRequest: () => (tracker.current = Math.random()),
     isLatestRequest: (num: number) => num == tracker.current,
   };
 }
 
-export function useOnlyLastestRequest<T>(request: () => Promise<T>, updater: (restul: T) => any) {
-  const { startReqeust, isLatestRequest } = useRequestTracker();
+export function useOnlyLatestRequest<T>(request: () => Promise<T>, updater: (restul: T) => any) {
+  const { startRequest, isLatestRequest } = useRequestTracker();
 
   return async () => {
-    const thisRun = startReqeust();
+    const thisRun = startRequest();
     const result = await request();
     if (isLatestRequest(thisRun)) {
       updater(result);
     }
   };
+}
+
+export function useStore<T extends Store>(type: new (...args) => T) {
+  return getStore(type);
 }

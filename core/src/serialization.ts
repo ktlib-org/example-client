@@ -1,4 +1,4 @@
-import { omit, map, each, keys, assign, isFunction, isObjectLike, isArray, chain, isArrayLike } from "lodash";
+import { assign, chain, each, isArray, isArrayLike, isFunction, isObjectLike, keys, map, omit } from "lodash";
 import { toJS } from "mobx";
 import { isField } from "./utils";
 
@@ -36,8 +36,16 @@ export function deserialize<T>(json: string, type: (new () => T) | T): T {
   return toType<T>(JSON.parse(json), type);
 }
 
+export function promiseTypeList<T>(data: Promise<Partial<T>[]>, type: new () => T): Promise<T[]> {
+  return data.then((d) => toTypeList(d, type));
+}
+
 export function toTypeList<T>(data: Partial<T>[], type: new () => T): T[] {
   return map(data, (d) => toType(d, type));
+}
+
+export function promiseType<T>(data: Promise<Partial<T>>, type: (new () => T) | T): Promise<T> {
+  return data.then((d) => toType(d, type));
 }
 
 export function toType<T>(data: Partial<T>, type: (new () => T) | T): T {

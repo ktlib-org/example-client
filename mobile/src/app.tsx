@@ -1,9 +1,10 @@
-import { AppStore } from "core/stores";
 import { registerRootComponent } from "expo";
 import { activateKeepAwake } from "expo-keep-awake";
 import "expo/build/Expo.fx";
 import Navigation from "./screens/navigation";
 import { NativeBaseProvider } from "native-base";
+import { getStore } from "core/stores";
+import { AppStore } from "core/stores/app-store";
 
 const app = () => (
   <NativeBaseProvider>
@@ -16,7 +17,7 @@ async function init() {
     activateKeepAwake();
   }
 
-  await AppStore.initialize();
+  await getStore(AppStore).initialize();
 
   registerRootComponent(app);
 }

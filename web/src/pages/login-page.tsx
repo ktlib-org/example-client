@@ -9,10 +9,11 @@ import { LoginResult } from "core/api";
 import EmailForm from "core/models/forms/email-form";
 import LoginForm from "core/models/forms/login-form";
 import SignupForm from "core/models/forms/signup-form";
-import { AppStore } from "core/stores";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import Page from "./page";
+import { useStore } from "core/react-utils";
+import { AppStore } from "core/stores/app-store";
 
 type Page = "login" | "forgot" | "signup" | "signupSuccess" | "forgotSuccess";
 
@@ -22,7 +23,7 @@ interface PageProps {
 
 const LoginPage = observer(() => {
   const [page, setPage] = useState("login" as Page);
-  const { action } = AppStore.actionInfo || {};
+  const { action } = useStore(AppStore).actionInfo || {};
 
   return (
     <Page name="login" title="Login">
@@ -47,8 +48,9 @@ const loginForm = new LoginForm();
 
 const Login = observer(({ change }: PageProps) => {
   const [loginResult, setLoginResult] = useState({} as LoginResult);
+  const appStore = useStore(AppStore);
 
-  const submit = async () => setLoginResult(await AppStore.login(loginForm));
+  const submit = async () => setLoginResult(await appStore.login(loginForm));
 
   const forgot = () => {
     forgotForm.updateField("email", loginForm.email);
@@ -92,8 +94,10 @@ const Login = observer(({ change }: PageProps) => {
 const forgotForm = new EmailForm();
 
 const Forgot = observer(({ change }: PageProps) => {
+  const appStore = useStore(AppStore);
+
   const submit = async () => {
-    await AppStore.forgotPassword(forgotForm);
+    await appStore.forgotPassword(forgotForm);
     change("forgotSuccess");
   };
 
@@ -145,8 +149,10 @@ const ForgotSuccess = ({ change }: PageProps) => {
 const signupForm = new SignupForm();
 
 const SignupPage = observer(({ change }: PageProps) => {
+  const appStore = useStore(AppStore);
+
   const submit = async () => {
-    await AppStore.signup(signupForm);
+    await appStore.signup(signupForm);
     change("signupSuccess");
   };
 
@@ -201,7 +207,7 @@ const ActionPage = observer(() => {
   const {
     actionInfo: { action },
     actionInvalid,
-  } = AppStore;
+  } = useStore(AppStore);
 
   const back = () => {
     window.location.href = "/";
@@ -212,7 +218,7 @@ const ActionPage = observer(() => {
   return (
     <div className="w-full">
       {!actionInvalid && (
-        <div className="flex flox-row text-xl">
+        <div className="flex flex-row text-xl">
           <div className="h-6 mr-2">
             <Spinner />
           </div>
@@ -221,7 +227,8 @@ const ActionPage = observer(() => {
       )}
       {actionInvalid && (
         <div>
-          <div className="text-xl mb-8">Invalid token</div> <Button text="Back to Login" onClick={back} />
+          <div className="text-xl mb-8">Invalid token</div>
+          <Button text="Back to Login" onClick={back} />
         </div>
       )}
     </div>

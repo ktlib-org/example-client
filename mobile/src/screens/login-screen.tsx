@@ -2,17 +2,18 @@ import AppInfo from "components/app-info";
 import Form from "components/form/form";
 import Input from "components/form/input";
 import LoginForm from "core/models/forms/login-form";
-import { useInitialEffect } from "core/react-utils";
-import { AppStore } from "core/stores";
+import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
 import { Button, View } from "native-base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { AppStore } from "core/stores/app-store";
 
 const loginForm = new LoginForm();
 
 const LoginScreen = observer(() => {
   useInitialEffect(loginForm.clearFormData);
-  const submit = () => AppStore.login(loginForm);
+  const appStore = useStore(AppStore);
+  const submit = () => appStore.login(loginForm);
 
   return (
     <KeyboardAwareScrollView

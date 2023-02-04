@@ -2,20 +2,20 @@ import { OrganizationData, OrganizationService } from "core/api";
 import InviteForm from "core/models/forms/invite-form";
 import OrganizationForm from "core/models/forms/organization-form";
 import { Invite, Organization, OrganizationUser, Role } from "core/models/organization";
-import { toType, toTypeList } from "core/serialization";
+import { promiseTypeList, toType } from "core/serialization";
 import { setOrgId } from "core/storage";
 import { action, autorun, makeObservable, observable, runInAction } from "mobx";
-import { AppStoreClass } from "./app-store";
+import { AppStore } from "./app-store";
 import { Store } from "./store";
 
-export class OrganizationStoreClass extends Store {
+export class OrganizationStore extends Store {
   @observable organization: Organization;
   @observable invites: Invite[] = [];
   @observable users: OrganizationUser[] = [];
 
-  readonly appStore: AppStoreClass;
+  readonly appStore: AppStore;
 
-  constructor(appStore: AppStoreClass) {
+  constructor(appStore: AppStore) {
     super();
     makeObservable(this);
     this.appStore = appStore;
@@ -23,6 +23,7 @@ export class OrganizationStoreClass extends Store {
   }
 
   async roleChanged() {
+    console.log(this.appStore.currentRole);
     if (this.appStore.currentRole) {
       await this.loadOrganization();
       if (!this.appStore.currentRole.isUser) {
@@ -56,8 +57,8 @@ export class OrganizationStoreClass extends Store {
   }
 
   async loadInvites() {
-    const invites = await OrganizationService.invites();
-    return runInAction(() => (this.invites = toTypeList(invites, Invite)));
+    const invites = await promiseTypeList(OrganizationService.invites(), Invite);
+    return runInAction(() => (this.invites = invites));
   }
 
   async sendInvite(form: InviteForm) {
@@ -73,17 +74,17 @@ export class OrganizationStoreClass extends Store {
   }
 
   async loadUsers() {
-    const users = await OrganizationService.users();
-    return runInAction(() => (this.users = toTypeList(users, OrganizationUser)));
+    const users = await promiseTypeList(OrganizationService.users(), OrganizationUser);
+    return runInAction(() => (this.users = users));
   }
 
-  async removeUser(orgUserId: number) {
-    await OrganizationService.removeUser(orgUserId);
+  async removeUser(userId: number) {
+    await OrganizationService.removeUser(userId);
     return this.loadUsers();
   }
 
-  async updateUserRole(orgUserId: number, role: Role) {
-    OrganizationService.updateUserRole(orgUserId, { role });
+  async updateUserRole(userId: number, role: Role) {
+    OrganizationService.updateUserRole(userId, { role });
     return this.loadUsers();
   }
 

@@ -4,27 +4,32 @@ import Button from "components/button";
 import Form from "components/form/form";
 import Input from "components/form/input";
 import OrganizationForm from "core/models/forms/organization-form";
-import { useInitialEffect } from "core/react-utils";
-import { ModalStore, OrganizationStore } from "core/stores";
+import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
+import { ModalState } from "core/stores/store";
+import { OrganizationStore } from "core/stores/organization-store";
 
 const form = new OrganizationForm();
 
+export const organizationModalState = new ModalState<void, void>();
+organizationModalState.beforeOpen = populateForm;
+
 function populateForm() {
-  if (OrganizationStore.organization) {
-    form.populate(OrganizationStore.organization);
+  const organizationStore = useStore(OrganizationStore);
+
+  if (organizationStore.organization) {
+    form.populate(organizationStore.organization);
   }
 }
 
-ModalStore.organization.beforeOpen = populateForm;
-
 const OrganizationModal = observer(() => {
+  const organizationStore = useStore(OrganizationStore);
   useInitialEffect(populateForm);
 
-  const { hide, open } = ModalStore.organization;
+  const { hide, open } = organizationModalState;
   const save = async () => {
-    await OrganizationStore.submitForm(form);
+    await organizationStore.submitForm(form);
     hide();
   };
 

@@ -1,11 +1,11 @@
 import classNames from "classnames";
 import { ButtonColor } from "core/constants";
-import { useState } from "react";
+import { ElementType, useState } from "react";
 import Spinner from "./spinner";
 
 interface Props {
   text: string;
-  Icon?: React.ElementType;
+  Icon?: ElementType;
   onClick: () => any;
   color?: ButtonColor;
   autoSpinner?: boolean;

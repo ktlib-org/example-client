@@ -1,5 +1,5 @@
 import { CurrentUserData, EmployeeService, LoginResult, OpenAPI, UserLoginData, UserService } from "core/api";
-import { API_URL } from "core/constants";
+import { API_URL, ButtonColor } from "core/constants";
 import EmailForm from "core/models/forms/email-form";
 import LoginForm from "core/models/forms/login-form";
 import PasswordForm from "core/models/forms/password-form";
@@ -9,20 +9,16 @@ import { CurrentUser, CurrentUserRole } from "core/models/user";
 import { toType } from "core/serialization";
 import { getOrgId, getUserToken, setOrgId, setUserToken, Storage } from "core/storage";
 import { action, makeObservable, observable, runInAction } from "mobx";
-import { Store } from "./store";
+import { ModalState, Store } from "./store";
 
-export interface ActionInfo {
-  action: string;
-  token: string;
-}
-
-export class AppStoreClass extends Store {
+export class AppStore extends Store {
   @observable currentUser: CurrentUser = null;
   @observable currentRole: CurrentUserRole = null;
   @observable actionInfo: ActionInfo = null;
   @observable actionInvalid: boolean = false;
   @observable isEmployee: boolean = false;
   @observable initialized: boolean = false;
+  readonly confirmation = new ModalState<ConfirmationState, boolean>();
 
   userToken: string = null;
   storage: Storage;
@@ -208,4 +204,21 @@ export class AppStoreClass extends Store {
     await this.clearUser();
     this.clearAction();
   }
+}
+
+export interface ActionInfo {
+  action: string;
+  token: string;
+}
+
+interface ConfirmationState {
+  message: string | JSX.Element;
+  okText?: string;
+  okColor?: ButtonColor;
+  hideOk?: boolean;
+  cancelText?: string;
+  cancelColor?: ButtonColor;
+  hideCancel?: boolean;
+  hideButtonIcons?: boolean;
+  header?: string | JSX.Element;
 }

@@ -4,24 +4,27 @@ import Button from "components/button";
 import Form from "components/form/form";
 import Input from "components/form/input";
 import UserProfileForm from "core/models/forms/user-profile-form";
-import { useInitialEffect } from "core/react-utils";
-import { AppStore, ModalStore } from "core/stores";
+import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
+import { ModalState } from "core/stores/store";
+import { AppStore } from "core/stores/app-store";
 
 const form = new UserProfileForm();
 
+export const userProfileModalState = new ModalState<void, void>();
+userProfileModalState.beforeOpen = populateForm;
+
 function populateForm() {
-  form.populate(AppStore.currentUser);
+  form.populate(useStore(AppStore).currentUser);
 }
 
-ModalStore.userProfile.beforeOpen = populateForm;
-
 const UserProfileModal = observer(() => {
+  const appStore = useStore(AppStore);
   useInitialEffect(populateForm);
-  const { hide, open } = ModalStore.userProfile;
+  const { hide, open } = userProfileModalState;
   const save = async () => {
-    await AppStore.updateUserInfo(form);
+    await appStore.updateUserInfo(form);
     hide();
   };
 

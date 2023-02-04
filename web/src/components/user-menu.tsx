@@ -1,20 +1,24 @@
 import { Menu, Transition } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
-import { AppStore, ModalStore } from "core/stores";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
 import { useNavigate } from "react-router";
-
-const userNavigation = [
-  { name: "Your Profile", onClick: ModalStore.userProfile.show },
-  { name: "Update Password", onClick: ModalStore.updatePassword.show },
-  { name: "Sign out", href: null, onClick: AppStore.logout },
-];
+import { useStore } from "core/react-utils";
+import { AppStore } from "core/stores/app-store";
+import { userProfileModalState } from "./modals/user-profile-modal";
+import { updatePasswordModalState } from "./modals/update-password-modal";
 
 const UserMenu = observer(() => {
-  const { isEmployee } = AppStore;
+  const { isEmployee, logout } = useStore(AppStore);
   const navigate = useNavigate();
+
+  const userNavigation = [
+    { name: "Your Profile", onClick: userProfileModalState.show },
+    { name: "Update Password", onClick: updatePasswordModalState.show },
+    { name: "Sign out", href: null, onClick: logout },
+  ];
+
   const navToShow = [...userNavigation];
 
   if (isEmployee) {

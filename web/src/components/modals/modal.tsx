@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { EMPTY_FUNC } from "core/constants";
 import { observer } from "mobx-react-lite";
-import { Fragment } from "react";
+import { Fragment, MutableRefObject } from "react";
 
 interface Props {
   open: boolean;
@@ -9,7 +9,7 @@ interface Props {
   description?: string | JSX.Element;
   children: JSX.Element | JSX.Element[] | string;
   buttons?: JSX.Element | JSX.Element[];
-  initialFocus?: React.MutableRefObject<HTMLElement | null> | undefined;
+  initialFocus?: MutableRefObject<HTMLElement | null> | undefined;
 }
 
 const Modal = observer(({ open, title, description, initialFocus, children, buttons }: Props) => {

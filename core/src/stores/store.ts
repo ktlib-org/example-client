@@ -1,6 +1,6 @@
 import { Entity } from "core/utils";
 import { find, findIndex, isObject, keyBy, keys, map, size } from "lodash";
-import { action, computed, observable, runInAction } from "mobx";
+import { action, computed, makeObservable, observable, runInAction } from "mobx";
 
 export abstract class Store {
   abstract clear(): Promise<void>;
@@ -11,9 +11,13 @@ abstract class ItemStore<T extends Entity> extends Store {
   @observable loaded = false;
 
   abstract get hasItems();
+
   abstract load(id: number): Promise<T>;
+
   abstract find(id: number): T;
+
   abstract update(item: T): T;
+
   abstract remove(idOrObject: number | T): T;
 
   async doLoadAll() {
@@ -31,7 +35,7 @@ abstract class ItemStore<T extends Entity> extends Store {
 
     const item = await this.findOrLoad(id);
 
-    return await runInAction(() => {
+    return runInAction(() => {
       this.selectedId = item ? item.id : null;
       return item;
     });
@@ -172,5 +176,42 @@ export abstract class ItemStoreMap<T extends Entity> extends ItemStore<T> {
     this.items = {} as Map<number, T>;
     this.selectedId = null;
     this.loaded = false;
+  }
+}
+
+export class ModalState<T, R> {
+  @observable open: boolean = false;
+  @observable state: T = {} as T;
+  onClose: (result?: R) => any;
+  onHidden: () => any;
+  onOpen: () => any;
+  beforeOpen: () => any;
+
+  constructor() {
+    makeObservable(this);
+  }
+
+  @action.bound
+  show(state: T, onClose?: (result?: R) => any) {
+    this.state = state;
+    if (this.beforeOpen) this.beforeOpen();
+    this.onClose = onClose;
+    this.open = true;
+    if (this.onOpen) setTimeout(this.onOpen, 50);
+  }
+
+  @action.bound
+  hide(result?: R) {
+    this.open = false;
+    if (this.onClose) {
+      try {
+        this.onClose(result);
+      } finally {
+        this.onClose = null;
+      }
+    }
+    if (this.onHidden) {
+      this.onHidden();
+    }
   }
 }

@@ -3,11 +3,12 @@ import { HomeIcon, OfficeBuildingIcon, UsersIcon, XIcon } from "@heroicons/react
 import { ArrowCircleLeftIcon, ArrowCircleRightIcon, ViewGridAddIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
 import { APP_NAME } from "core/constants";
-import { AppStore } from "core/stores";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { useStore } from "core/react-utils";
+import { AppStore } from "core/stores/app-store";
 
 const userNavigation = [
   { name: "Dashboard", href: "/", icon: HomeIcon },
@@ -31,10 +32,11 @@ interface Props {
 const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: Props) => {
   const location = useLocation();
   const nav = useNavigate();
+  const appStore = useStore(AppStore);
 
   let navigation = employee ? employeeNavigation : userNavigation;
 
-  if (!AppStore.currentRole) {
+  if (!appStore.currentRole) {
     navigation = [navigation[0]];
   }
 
