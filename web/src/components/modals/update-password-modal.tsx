@@ -1,5 +1,3 @@
-import { UploadIcon } from "@heroicons/react/outline";
-import { XIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import Form from "components/form/form";
 import Input from "components/form/input";
@@ -30,8 +28,15 @@ const UpdatePasswordModal = observer(() => {
       open={open || !appStore.currentUser.passwordSet}
       title="Update Password"
       buttons={[
-        <Button key={1} color="green" onClick={save} text="Update" Icon={UploadIcon} submitting={form.isSubmitting} />,
-        <Button key={0} color="gray" onClick={hide} text="Cancel" Icon={XIcon} />,
+        <Button
+          key={1}
+          color="green"
+          onClick={save}
+          text="Update"
+          icon="ArrowRightOnSquare"
+          submitting={form.isSubmitting}
+        />,
+        <Button key={0} color="gray" onClick={hide} text="Cancel" icon="X" />,
       ]}
     >
       <Form form={form} submit={save}>

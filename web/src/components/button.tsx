@@ -1,18 +1,20 @@
 import classNames from "classnames";
 import { ButtonColor } from "core/constants";
-import { ElementType, useState } from "react";
+import { useState } from "react";
 import Spinner from "./spinner";
+import Icon, { Icons } from "./icon";
 
 interface Props {
   text: string;
-  Icon?: ElementType;
+  icon?: Icons;
   onClick: () => any;
   color?: ButtonColor;
   autoSpinner?: boolean;
   submitting?: boolean;
+  className?: string;
 }
 
-const Button = ({ text, Icon, onClick, color, autoSpinner, submitting }: Props) => {
+const Button = ({ text, icon, onClick, color, autoSpinner, submitting, className }: Props) => {
   const [running, setRunning] = useState(false);
   let c = color || "blue";
 
@@ -33,22 +35,20 @@ const Button = ({ text, Icon, onClick, color, autoSpinner, submitting }: Props) 
       onClick={click}
       type="button"
       className={classNames(
-        "w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-auto sm:text-sm",
+        "w-full inline-flex justify-center rounded-md border border-transparent shadow-sm text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-offset-2 sm:text-sm py-2 w-full transition duration-150 ease-in",
         c == "gray" && "bg-gray-300 hover:bg-gray-400 focus:ring-gray-200 text-black",
         c == "blue" && "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-white",
         c == "red" && "bg-red-600 hover:bg-red-700 focus:ring-red-500 text-white",
         c == "green" && "bg-green-600 hover:bg-green-700 focus:ring-green-500 text-white",
+        className,
       )}
     >
       {text}
-      {Icon &&
-        (submitting || (running && autoSpinner) ? (
-          <div className="h-5 w-5 ml-1">
-            <Spinner />
-          </div>
-        ) : (
-          <Icon className="ml-0.5 -mr-1 h-5 w-5" aria-hidden="true" />
-        ))}
+      {icon && (
+        <div className="h-5 w-5 ml-1">
+          {submitting || (running && autoSpinner) ? <Spinner /> : <Icon name={icon} />}
+        </div>
+      )}
     </button>
   );
 };

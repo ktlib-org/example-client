@@ -4,18 +4,19 @@ import { observer } from "mobx-react-lite";
 import { useContext } from "react";
 import Field from "./field";
 import { FormContext } from "./form";
+import Icon, { Icons } from "../icon";
 
 interface Props {
   type?: string;
   id?: string;
   label?: string;
-  Icon?: React.ElementType;
+  icon?: Icons;
   placeholder?: string;
   field: string;
   onBlur?: () => any;
 }
 
-const Input = observer(({ type, id, field, label, Icon, placeholder, onBlur }: Props) => {
+const Input = observer(({ type, id, field, label, icon, placeholder, onBlur }: Props) => {
   const form = useContext(FormContext);
   form.validField(field);
   const f = field as keyof Form;
@@ -23,9 +24,9 @@ const Input = observer(({ type, id, field, label, Icon, placeholder, onBlur }: P
 
   return (
     <Field id={id} name={field} error={form.errorText(f)} label={label}>
-      {Icon && (
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {<Icon className="h-5 w-5" />}
+      {icon && (
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+          {<Icon name={icon} />}
         </div>
       )}
       <input

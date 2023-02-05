@@ -1,4 +1,4 @@
-import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import Table from "components/table";
 import { Invite, OrganizationUser } from "core/models/organization";
@@ -56,7 +56,7 @@ const UsersPage = observer(() => {
         ]}
       />
       <div className="my-7">
-        <Button color="green" Icon={PlusIcon} text="Add User" onClick={inviteModalState.show} />
+        <Button color="green" icon="Plus" text="Add User" onClick={inviteModalState.show} />
       </div>
       {organizationStore.invites.length > 0 && (
         <Table

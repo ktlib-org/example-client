@@ -2,7 +2,7 @@ import { OrganizationData, OrganizationService } from "core/api";
 import InviteForm from "core/models/forms/invite-form";
 import OrganizationForm from "core/models/forms/organization-form";
 import { Invite, Organization, OrganizationUser, Role } from "core/models/organization";
-import { promiseTypeList, toType } from "core/serialization";
+import { toType, toTypeList } from "core/serialization";
 import { setOrgId } from "core/storage";
 import { action, autorun, makeObservable, observable, runInAction } from "mobx";
 import { AppStore } from "./app-store";
@@ -23,7 +23,6 @@ export class OrganizationStore extends Store {
   }
 
   async roleChanged() {
-    console.log(this.appStore.currentRole);
     if (this.appStore.currentRole) {
       await this.loadOrganization();
       if (!this.appStore.currentRole.isUser) {
@@ -57,7 +56,7 @@ export class OrganizationStore extends Store {
   }
 
   async loadInvites() {
-    const invites = await promiseTypeList(OrganizationService.invites(), Invite);
+    const invites = toTypeList(await OrganizationService.invites(), Invite);
     return runInAction(() => (this.invites = invites));
   }
 
@@ -74,7 +73,7 @@ export class OrganizationStore extends Store {
   }
 
   async loadUsers() {
-    const users = await promiseTypeList(OrganizationService.users(), OrganizationUser);
+    const users = toTypeList(await OrganizationService.users(), OrganizationUser);
     return runInAction(() => (this.users = users));
   }
 

@@ -1,4 +1,3 @@
-import { CheckIcon, XIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
@@ -18,14 +17,14 @@ const ConfirmationModal = observer(() => {
           color={confirmation.state.okColor || "blue"}
           onClick={() => confirmation.hide(true)}
           text={confirmation.state.okText || "OK"}
-          Icon={CheckIcon}
+          icon="Check"
         />,
         <Button
           key={0}
           color={confirmation.state.cancelColor || "gray"}
           onClick={() => confirmation.hide(false)}
           text={confirmation.state.cancelText || "Cancel"}
-          Icon={XIcon}
+          icon="X"
         />,
       ]}
     >

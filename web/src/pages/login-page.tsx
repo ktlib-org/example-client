@@ -1,5 +1,3 @@
-import { LoginIcon } from "@heroicons/react/outline";
-import { KeyIcon, MailIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import ErrorMessage from "components/error-message";
 import Form from "components/form/form";
@@ -14,6 +12,7 @@ import { useState } from "react";
 import Page from "./page";
 import { useStore } from "core/react-utils";
 import { AppStore } from "core/stores/app-store";
+import Icon from "../components/icon";
 
 type Page = "login" | "forgot" | "signup" | "signupSuccess" | "forgotSuccess";
 
@@ -27,17 +26,14 @@ const LoginPage = observer(() => {
 
   return (
     <Page name="login" title="Login">
-      <div className="bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
-        <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-light-blue-500 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-          <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
-            {!action && page == "login" && <Login change={setPage} />}
-            {!action && page == "forgot" && <Forgot change={setPage} />}
-            {!action && page == "forgotSuccess" && <ForgotSuccess change={setPage} />}
-            {!action && page == "signup" && <SignupPage change={setPage} />}
-            {!action && page == "signupSuccess" && <SignupSuccess change={setPage} />}
-            {action && <ActionPage />}
-          </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-300">
+        <div className="flex flex-col bg-white shadow-md px-4 sm:px-6 md:px-8 lg:px-10 py-8 rounded-md w-full max-w-md">
+          {!action && page == "login" && <Login change={setPage} />}
+          {!action && page == "forgot" && <Forgot change={setPage} />}
+          {!action && page == "forgotSuccess" && <ForgotSuccess change={setPage} />}
+          {!action && page == "signup" && <SignupPage change={setPage} />}
+          {!action && page == "signupSuccess" && <SignupSuccess change={setPage} />}
+          {action && <ActionPage />}
         </div>
       </div>
     </Page>
@@ -64,30 +60,57 @@ const Login = observer(({ change }: PageProps) => {
   };
 
   return (
-    <div>
-      <div className="w-80">
+    <>
+      <div className="font-medium self-center text-xl sm:text-2xl uppercase text-gray-800">Login To Your Account</div>
+      <button className="relative mt-6 border rounded-md py-2 text-sm text-gray-800 bg-gray-100 hover:bg-gray-200">
+        <span className="absolute left-0 top-0 flex items-center justify-center h-full w-10 text-blue-500">
+          <Icon name="Google" />
+        </span>
+        <span>Login with Google</span>
+      </button>
+      <div className="relative mt-10 h-px bg-gray-300">
+        <div className="absolute left-0 top-0 flex justify-center w-full -mt-2">
+          <span className="bg-white px-4 text-xs text-gray-500 uppercase">Or Login With Email</span>
+        </div>
+      </div>
+      <div className="mt-10">
         <Form form={loginForm} submit={submit}>
-          <Input type="email" label="Email" field="email" Icon={MailIcon} />
-          <Input type="password" field="password" label="Password" Icon={KeyIcon} />
-          <div className="my-8">
-            <Button Icon={LoginIcon} text="Login" onClick={submit} submitting={loginForm.isSubmitting} />
+          <div className="flex flex-col mb-6">
+            <Input type="email" label="Email" field="email" icon="At" />
+          </div>
+          <div className="flex flex-col mb-6">
+            <Input type="password" field="password" label="Password" icon="Padlock" />
+          </div>
+
+          <div className="flex items-center mb-6 -mt-4">
+            <div className="flex ml-auto">
+              <a
+                onClick={forgot}
+                className="inline-flex text-xs sm:text-sm text-blue-500 hover:text-blue-700 cursor-pointer"
+              >
+                Forgot Your Password?
+              </a>
+            </div>
+          </div>
+
+          <div className="flex w-full">
+            <Button text="Login" icon="ArrowRightOnSquare" onClick={submit} />
           </div>
           {loginResult.loginFailed && <ErrorMessage text={loginResult.userLocked ? "User locked" : "Login failed"} />}
         </Form>
       </div>
-      <div>
-        <div className="float-left">
-          <a onClick={forgot} className="text-blue-600 cursor-pointer">
-            Forgot Password?
-          </a>
-        </div>
-        <div className="float-right">
-          <a onClick={signup} className="text-blue-600 cursor-pointer">
-            Create Account
-          </a>
-        </div>
+      <div className="flex justify-center items-center mt-6">
+        <a
+          onClick={signup}
+          className="inline-flex items-center font-bold text-blue-500 hover:text-blue-700 text-xs text-center cursor-pointer"
+        >
+          <span>
+            <Icon name="UserPlus" />
+          </span>
+          <span className="ml-2">You don't have an account?</span>
+        </a>
       </div>
-    </div>
+    </>
   );
 });
 
@@ -110,18 +133,12 @@ const Forgot = observer(({ change }: PageProps) => {
     <div>
       <Form form={forgotForm} submit={submit}>
         <h3>To reset your password, enter your email below</h3>
-        <Input type="email" label="Email" field="email" Icon={MailIcon} />
+        <Input type="email" label="Email" field="email" icon="At" />
         <div className="my-8">
-          <Button Icon={LoginIcon} text="Submit" onClick={submit} submitting={forgotForm.isSubmitting} />
+          <Button icon="ArrowRightOnSquare" text="Submit" onClick={submit} submitting={forgotForm.isSubmitting} />
+          <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
         </div>
       </Form>
-      <div>
-        <div className="float-left">
-          <a onClick={back} className="text-blue-600 cursor-pointer">
-            Back to Login
-          </a>
-        </div>
-      </div>
     </div>
   );
 });
@@ -136,11 +153,7 @@ const ForgotSuccess = ({ change }: PageProps) => {
     <div>
       <h3>We've sent an email to {forgotForm.email}, if an account exists for that email. Check your email.</h3>
       <div>
-        <div className="float-left">
-          <a onClick={back} className="text-blue-600 cursor-pointer">
-            Back to Login
-          </a>
-        </div>
+        <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
       </div>
     </div>
   );
@@ -162,24 +175,16 @@ const SignupPage = observer(({ change }: PageProps) => {
   };
 
   return (
-    <div>
-      <Form form={signupForm} submit={submit}>
-        <h3>Signup</h3>
-        <Input label="First Name" field="firstName" />
-        <Input label="Last Name" field="lastName" />
-        <Input type="email" label="Email" field="email" />
-        <div className="my-8">
-          <Button Icon={LoginIcon} text="Submit" onClick={submit} submitting={signupForm.isSubmitting} />
-        </div>
-      </Form>
-      <div>
-        <div className="float-left">
-          <a onClick={back} className="text-blue-600 cursor-pointer">
-            Back to Login
-          </a>
-        </div>
+    <Form form={signupForm} submit={submit}>
+      <h3>Signup</h3>
+      <Input label="First Name" field="firstName" />
+      <Input label="Last Name" field="lastName" />
+      <Input type="email" label="Email" field="email" />
+      <div className="my-8">
+        <Button icon="ArrowRightOnSquare" text="Submit" onClick={submit} submitting={signupForm.isSubmitting} />
+        <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
       </div>
-    </div>
+    </Form>
   );
 });
 
@@ -193,11 +198,7 @@ const SignupSuccess = ({ change }: PageProps) => {
     <div>
       <h3>We've sent an email to {signupForm.email}. Check your email.</h3>
       <div>
-        <div className="float-left">
-          <a onClick={back} className="text-blue-600 cursor-pointer">
-            Back to Login
-          </a>
-        </div>
+        <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
       </div>
     </div>
   );
@@ -228,7 +229,7 @@ const ActionPage = observer(() => {
       {actionInvalid && (
         <div>
           <div className="text-xl mb-8">Invalid token</div>
-          <Button text="Back to Login" onClick={back} />
+          <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
         </div>
       )}
     </div>
