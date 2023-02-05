@@ -16,7 +16,7 @@ const Form = ({ children, form, submit }: Props) => (
       submit();
     }}
     className="space-y-2"
-    onKeyPress={(e) => {
+    onKeyUp={(e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         submit();

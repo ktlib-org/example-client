@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { ButtonColor } from "core/constants";
 import { useState } from "react";
-import Spinner from "./spinner";
 import Icon, { Icons } from "./icon";
 
 interface Props {
@@ -46,7 +45,7 @@ const Button = ({ text, icon, onClick, color, autoSpinner, submitting, className
       {text}
       {icon && (
         <div className="h-5 w-5 ml-1">
-          {submitting || (running && autoSpinner) ? <Spinner /> : <Icon name={icon} />}
+          {submitting || (running && autoSpinner) ? <Icon name="Spinner" /> : <Icon name={icon} />}
         </div>
       )}
     </button>
