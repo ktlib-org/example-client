@@ -1,4 +1,3 @@
-import { MenuAlt2Icon } from "@heroicons/react/outline";
 import classNames from "classnames";
 import SideBar from "components/sidebar";
 import UserMenu from "components/user-menu";
@@ -6,6 +5,7 @@ import { useInitialEffect } from "core/react-utils";
 import { getCompactSidebar, setCompactSidebar } from "core/storage";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import Icon from "./icon";
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -42,7 +42,7 @@ const Layout = observer(({ children, employee }: Props) => {
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
-            <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+            <Icon name="Bars3BottomLeft" />
           </button>
           <div className="flex-1 px-4 flex justify-between">
             <div className="flex-1 flex"></div>

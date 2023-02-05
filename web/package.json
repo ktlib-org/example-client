@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.2",
-    "@heroicons/react": "^1.0.6",
     "@tailwindcss/forms": "^0.5.0",
     "@vitejs/plugin-react": "^1.0.7",
     "brownies": "^3.0.0",

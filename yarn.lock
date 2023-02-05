@@ -1795,15 +1795,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@heroicons/react@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "@heroicons/react@npm:1.0.6"
-  peerDependencies:
-    react: ">= 16"
-  checksum: 372b1eda3ce735ef069777bc96304f70de585ebb71a6d1cedc121bb695f9bca235619112e3ee14e8779e95a03096813cbbe3b755927a54b7580d1ce084fa4096
-  languageName: node
-  linkType: hard
-
 "@internationalized/date@npm:3.0.0-alpha.4":
   version: 3.0.0-alpha.4
   resolution: "@internationalized/date@npm:3.0.0-alpha.4"
@@ -13114,7 +13105,6 @@ __metadata:
   resolution: "web@workspace:web"
   dependencies:
     "@headlessui/react": ^1.7.2
-    "@heroicons/react": ^1.0.6
     "@tailwindcss/forms": ^0.5.0
     "@types/chai": ^4.3.0
     "@types/jest": ^27.4.0

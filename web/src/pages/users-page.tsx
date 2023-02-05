@@ -1,4 +1,3 @@
-import { TrashIcon } from "@heroicons/react/solid";
 import Button from "components/button";
 import Table from "components/table";
 import { Invite, OrganizationUser } from "core/models/organization";
@@ -7,6 +6,7 @@ import { useStore } from "core/react-utils";
 import { AppStore } from "core/stores/app-store";
 import { OrganizationStore } from "core/stores/organization-store";
 import { inviteModalState } from "../components/modals/invite-modal";
+import Icon from "../components/icon";
 
 const UsersPage = observer(() => {
   const { currentUser, confirmation } = useStore(AppStore);
@@ -50,7 +50,9 @@ const UsersPage = observer(() => {
             header: "",
             row: (u) =>
               u.userId == currentUser.id || u.isOwner ? null : (
-                <TrashIcon color="red" className="cursor-pointer w-6" onClick={() => deleteUser(u)} />
+                <span className="text-red-600">
+                  <Icon name="Trash" onClick={() => deleteUser(u)} />
+                </span>
               ),
           },
         ]}
@@ -69,7 +71,11 @@ const UsersPage = observer(() => {
             {
               name: "actions",
               header: "",
-              row: (i) => <TrashIcon color="red" className="cursor-pointer w-6" onClick={() => deleteInvite(i)} />,
+              row: (i) => (
+                <span className="text-red-600">
+                  <Icon name="Trash" onClick={() => deleteInvite(i)} />
+                </span>
+              ),
             },
           ]}
         />

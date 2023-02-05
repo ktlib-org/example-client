@@ -1,6 +1,4 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { HomeIcon, OfficeBuildingIcon, UsersIcon, XIcon } from "@heroicons/react/outline";
-import { ArrowCircleLeftIcon, ArrowCircleRightIcon, ViewGridAddIcon } from "@heroicons/react/solid";
 import classNames from "classnames";
 import { APP_NAME } from "core/constants";
 import { observer } from "mobx-react-lite";
@@ -9,16 +7,23 @@ import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useStore } from "core/react-utils";
 import { AppStore } from "core/stores/app-store";
+import Icon, { Icons } from "./icon";
 
-const userNavigation = [
-  { name: "Dashboard", href: "/", icon: HomeIcon },
-  { name: "Users", href: "/users", icon: UsersIcon },
+interface NavItem {
+  name: string;
+  href: string;
+  icon: Icons;
+}
+
+const userNavigation: NavItem[] = [
+  { name: "Dashboard", href: "/", icon: "Home" },
+  { name: "Users", href: "/users", icon: "Users" },
 ];
 
-const employeeNavigation = [
-  { name: "Dashboard", href: "/employee", icon: HomeIcon },
-  { name: "Organizations", href: "/employee/organizations", icon: OfficeBuildingIcon },
-  { name: "Users", href: "/employee/users", icon: UsersIcon },
+const employeeNavigation: NavItem[] = [
+  { name: "Dashboard", href: "/employee", icon: "Home" },
+  { name: "Organizations", href: "/employee/organizations", icon: "OfficeBuilding" },
+  { name: "Users", href: "/employee/users", icon: "Users" },
 ];
 
 interface Props {
@@ -77,11 +82,11 @@ const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: P
                 <div className="absolute top-0 right-0 -mr-12 pt-2">
                   <button
                     type="button"
-                    className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                    className="text-white ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setOpen(false)}
                   >
                     <span className="sr-only">Close sidebar</span>
-                    <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                    <Icon name="X" />
                   </button>
                 </div>
               </Transition.Child>
@@ -99,13 +104,15 @@ const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: P
                         "group flex items-center px-2 py-2 text-base font-medium rounded-md",
                       )}
                     >
-                      <item.icon
+                      <span
                         className={classNames(
                           location.pathname == item.href ? "text-gray-300" : "text-gray-400 group-hover:text-gray-300",
                           "mr-4 flex-shrink-0 h-6 w-6",
                         )}
                         aria-hidden="true"
-                      />
+                      >
+                        <Icon name={item.icon} />
+                      </span>
                       {item.name}
                     </Link>
                   ))}
@@ -124,7 +131,7 @@ const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: P
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
           <div className="flex items-center h-10 flex-shrink-0 px-4 bg-gray-900 text-white">
-            <ViewGridAddIcon onClick={() => nav("/")} className="h-6 w-6 cursor-pointer" />
+            <Icon name="SquaresPlusSolid" onClick={() => nav("/")} />
             {!compact && <span className="pl-1 font-bold">{APP_NAME}</span>}
           </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
@@ -140,13 +147,15 @@ const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: P
                     "group flex items-center px-2 py-2 text-sm font-medium rounded-md",
                   )}
                 >
-                  <item.icon
+                  <span
                     className={classNames(
                       location.pathname == item.href ? "text-gray-300" : "text-gray-400 group-hover:text-gray-300",
                       "mr-3 flex-shrink-0 h-6 w-6",
                     )}
                     aria-hidden="true"
-                  />
+                  >
+                    <Icon name={item.icon} />
+                  </span>
                   {!compact && item.name}
                 </Link>
               ))}
@@ -155,10 +164,10 @@ const SideBar = observer(({ open, setOpen, compact, toggleCompact, employee }: P
               {!compact && (
                 <>
                   <div className="flex-1 text-right">Collapse</div>
-                  <ArrowCircleLeftIcon onClick={toggleCompact} className="w-7 cursor-pointer" />
+                  <Icon name="ArrowLeftCircleSolid" onClick={toggleCompact} />
                 </>
               )}
-              {compact && <ArrowCircleRightIcon onClick={toggleCompact} className="w-7 cursor-pointer" />}
+              {compact && <Icon name="ArrowRightCircleSolid" onClick={toggleCompact} />}
             </div>
           </div>
         </div>

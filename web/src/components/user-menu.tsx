@@ -1,5 +1,4 @@
 import { Menu, Transition } from "@headlessui/react";
-import { UserCircleIcon } from "@heroicons/react/outline";
 import classNames from "classnames";
 import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
@@ -8,6 +7,7 @@ import { useStore } from "core/react-utils";
 import { AppStore } from "core/stores/app-store";
 import { userProfileModalState } from "./modals/user-profile-modal";
 import { updatePasswordModalState } from "./modals/update-password-modal";
+import Icon from "./icon";
 
 const UserMenu = observer(() => {
   const { isEmployee, logout } = useStore(AppStore);
@@ -33,7 +33,7 @@ const UserMenu = observer(() => {
       <div>
         <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           <span className="sr-only">Open user menu</span>
-          <UserCircleIcon className="w-7 h-7" />
+          <Icon name="UserCircle" />
         </Menu.Button>
       </div>
       <Transition
