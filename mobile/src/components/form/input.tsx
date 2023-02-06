@@ -10,8 +10,6 @@ interface Props extends IInputProps {
   helperText?: string;
 }
 
-FormControl;
-
 const Input = observer((props: Props) => {
   const form = useContext(FormContext);
   form.validField(props.field);
