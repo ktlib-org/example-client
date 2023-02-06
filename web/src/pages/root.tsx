@@ -8,7 +8,7 @@ import Employee from "./employee";
 import LoginPage from "./login-page";
 import UsersPage from "./users-page";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 
 const AppRoot = observer(() =>
   useStore(AppStore).currentUser ? (

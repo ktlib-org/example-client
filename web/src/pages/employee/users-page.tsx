@@ -2,7 +2,7 @@ import Table from "components/table";
 import { EMPTY_FUNC } from "core/constants";
 import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
-import { EmployeeStore } from "core/stores/employee-store";
+import EmployeeStore from "core/stores/employee-store";
 
 const UsersPage = observer(() => {
   const employeeStore = useStore(EmployeeStore);

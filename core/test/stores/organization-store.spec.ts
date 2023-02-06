@@ -2,8 +2,8 @@ import { EmployeeService, OrganizationService, OrganizationUserData, UserService
 import InviteForm from "core/models/forms/invite-form";
 import OrganizationForm from "core/models/forms/organization-form";
 import { Invite, Organization, OrganizationUser } from "core/models/organization";
-import { AppStore } from "core/stores/app-store";
-import { OrganizationStore } from "core/stores/organization-store";
+import AppStore from "core/stores/app-store";
+import OrganizationStore from "core/stores/organization-store";
 
 let appStore: AppStore;
 let organizationStore: OrganizationStore;

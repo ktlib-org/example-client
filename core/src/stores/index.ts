@@ -1,10 +1,7 @@
-import { AppStore } from "./app-store";
-import { EmployeeStore } from "./employee-store";
-import { OrganizationStore } from "./organization-store";
+import AppStore from "./app-store";
+import EmployeeStore from "./employee-store";
+import OrganizationStore from "./organization-store";
 import { Store } from "./store";
-import * as Mobx from "mobx";
-
-Mobx.configure({ enforceActions: "observed" });
 
 const stores: { [key: string]: Store } = {};
 const storesToClear: Store[] = [];

@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import Modal from "./modal";
 import { ModalState } from "core/stores/store";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 
 const form = new PasswordForm();
 export const updatePasswordModalState = new ModalState<void, void>();

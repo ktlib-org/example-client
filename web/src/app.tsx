@@ -1,5 +1,5 @@
 import { setStorage } from "core/storage";
-import { ActionInfo, AppStore } from "core/stores/app-store";
+import AppStore, { ActionInfo } from "core/stores/app-store";
 import * as ReactDOM from "react-dom";
 import "./app.css";
 import Root from "./pages/root";

@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import Page from "./page";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 import Icon from "../components/icon";
 
 type Page = "login" | "forgot" | "signup" | "signupSuccess" | "forgotSuccess";

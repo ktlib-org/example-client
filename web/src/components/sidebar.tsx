@@ -6,7 +6,7 @@ import { Fragment } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 import Icon, { Icons } from "./icon";
 
 interface NavItem {

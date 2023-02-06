@@ -5,7 +5,7 @@ import { toTypeList } from "core/serialization";
 import { observable, runInAction } from "mobx";
 import { Store } from "./store";
 
-export class EmployeeStore extends Store {
+export default class EmployeeStore extends Store {
   @observable organizations: Organization[] = [];
   @observable users: User[] = [];
 

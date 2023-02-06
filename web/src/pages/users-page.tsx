@@ -3,8 +3,8 @@ import Table from "components/table";
 import { Invite, OrganizationUser } from "core/models/organization";
 import { observer } from "mobx-react-lite";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
-import { OrganizationStore } from "core/stores/organization-store";
+import AppStore from "core/stores/app-store";
+import OrganizationStore from "core/stores/organization-store";
 import { inviteModalState } from "../components/modals/invite-modal";
 import Icon from "../components/icon";
 

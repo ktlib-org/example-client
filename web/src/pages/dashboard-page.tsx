@@ -7,7 +7,7 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Page from "./page";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 import { organizationModalState } from "../components/modals/organization-modal";
 
 const DashboardPage = observer(() => {

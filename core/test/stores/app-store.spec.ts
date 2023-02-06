@@ -7,7 +7,7 @@ import SignupForm from "core/models/forms/signup-form";
 import UserProfileForm from "core/models/forms/user-profile-form";
 import { CurrentUser, CurrentUserRole } from "core/models/user";
 import { getUserToken, setUserToken } from "core/storage";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 
 let appStore: AppStore;
 

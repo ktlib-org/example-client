@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Fragment } from "react";
 import { useNavigate } from "react-router";
 import { useStore } from "core/react-utils";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 import { userProfileModalState } from "./modals/user-profile-modal";
 import { updatePasswordModalState } from "./modals/update-password-modal";
 import Icon from "./icon";

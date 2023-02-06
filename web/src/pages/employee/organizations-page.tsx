@@ -2,7 +2,7 @@ import Table from "components/table";
 import { EMPTY_FUNC } from "core/constants";
 import { useInitialEffect, useStore } from "core/react-utils";
 import { format } from "date-fns";
-import { EmployeeStore } from "core/stores/employee-store";
+import EmployeeStore from "core/stores/employee-store";
 
 const OrganizationsPage = () => {
   const employeeStore = useStore(EmployeeStore);

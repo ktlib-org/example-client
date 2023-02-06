@@ -4,7 +4,7 @@ import "expo/build/Expo.fx";
 import Navigation from "./screens/navigation";
 import { NativeBaseProvider } from "native-base";
 import { getStore } from "core/stores";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 
 const app = () => (
   <NativeBaseProvider>

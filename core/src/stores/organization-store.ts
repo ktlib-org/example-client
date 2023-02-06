@@ -5,10 +5,10 @@ import { Invite, Organization, OrganizationUser, Role } from "core/models/organi
 import { toType, toTypeList } from "core/serialization";
 import { setOrgId } from "core/storage";
 import { action, autorun, makeObservable, observable, runInAction } from "mobx";
-import { AppStore } from "./app-store";
+import AppStore from "./app-store";
 import { Store } from "./store";
 
-export class OrganizationStore extends Store {
+export default class OrganizationStore extends Store {
   @observable organization: Organization;
   @observable invites: Invite[] = [];
   @observable users: OrganizationUser[] = [];

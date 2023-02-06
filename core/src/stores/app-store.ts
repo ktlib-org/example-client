@@ -11,7 +11,7 @@ import { getOrgId, getUserToken, setOrgId, setUserToken, Storage } from "core/st
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ModalState, Store } from "./store";
 
-export class AppStore extends Store {
+export default class AppStore extends Store {
   @observable currentUser: CurrentUser = null;
   @observable currentRole: CurrentUserRole = null;
   @observable actionInfo: ActionInfo = null;

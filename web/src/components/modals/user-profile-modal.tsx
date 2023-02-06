@@ -6,7 +6,7 @@ import { useInitialEffect, useStore } from "core/react-utils";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
 import { ModalState } from "core/stores/store";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 
 const form = new UserProfileForm();
 

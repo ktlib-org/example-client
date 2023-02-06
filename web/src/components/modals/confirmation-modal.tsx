@@ -1,7 +1,7 @@
 import Button from "components/button";
 import { observer } from "mobx-react-lite";
 import Modal from "./modal";
-import { AppStore } from "core/stores/app-store";
+import AppStore from "core/stores/app-store";
 import { useStore } from "core/react-utils";
 
 const ConfirmationModal = observer(() => {
