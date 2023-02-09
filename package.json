@@ -8,14 +8,12 @@
     "web"
   ],
   "scripts": {
-    "postinstall": "yarn workspace core run env && yarn genApi",
+    "postinstall": "yarn workspace core run env",
     "test": "yarn core.test && yarn web.test && yarn mobile.test",
     "core.test": "yarn workspace core run test",
     "web.test": "yarn workspace web run test",
     "mobile.test": "yarn workspace mobile run test",
     "tsc": "yarn workspace core run tsc && yarn workspace web run tsc && yarn workspace mobile run tsc",
-    "updateOpenApi": "yarn workspace core run updateOpenApi && yarn genApi",
-    "genApi": "yarn workspace core run genApi",
     "env.local": "yarn workspace core run env.local",
     "env.dev": "yarn workspace core run env.dev",
     "env.prod": "yarn workspace core run env.prod",

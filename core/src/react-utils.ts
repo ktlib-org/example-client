@@ -30,7 +30,7 @@ export function useRequestTracker() {
   };
 }
 
-export function useOnlyLatestRequest<T>(request: () => Promise<T>, updater: (restul: T) => any) {
+export function useOnlyLatestRequest<T>(request: () => Promise<T>, updater: (result: T) => any) {
   const { startRequest, isLatestRequest } = useRequestTracker();
 
   return async () => {

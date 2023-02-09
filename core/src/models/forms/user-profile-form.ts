@@ -1,9 +1,8 @@
-import { UserUpdate } from "core/api";
 import { notEmpty } from "core/validation";
 import { action, makeObservable, observable } from "mobx";
 import Form from "./form";
 
-export default class UserProfileForm extends Form implements UserUpdate {
+export default class UserProfileForm extends Form {
   @observable firstName: string;
   @observable lastName: string;
 

@@ -1,5 +1,4 @@
 import Button from "components/button";
-import { SystemService } from "core/api";
 import { API_URL } from "core/constants";
 import ENVIRONMENT from "core/environment";
 import { useInitialEffect, useStore } from "core/react-utils";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router";
 import Page from "./page";
 import AppStore from "core/stores/app-store";
 import { organizationModalState } from "../components/modals/organization-modal";
+import { getApiStatus } from "core/api";
 
 const DashboardPage = observer(() => {
   const [serverVersion, setServerVersion] = useState(null);
@@ -19,7 +19,7 @@ const DashboardPage = observer(() => {
     if (appStore.actionInfo?.action) {
       nav("/", { replace: true });
     }
-    const result = await SystemService.status();
+    const result = await getApiStatus();
     setServerVersion(result.version);
   });
 

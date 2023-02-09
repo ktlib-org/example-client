@@ -1,11 +1,10 @@
-import { CurrentUserData, CurrentUserRoleData, OrganizationUserData } from "core/api";
 import { type } from "core/serialization";
 import { assign } from "lodash";
 import { makeObservable } from "mobx";
 import { EntityWithDates } from "./entity";
 import { Role } from "./organization";
 
-export class CurrentUserRole implements CurrentUserRoleData {
+export class CurrentUserRole {
   organizationId: number;
   organizationName: string;
   role: Role;
@@ -15,19 +14,19 @@ export class CurrentUserRole implements CurrentUserRoleData {
   }
 
   get isUser() {
-    return this.role == OrganizationUserData.role.USER;
+    return this.role == Role.USER;
   }
 
   get isAdmin() {
-    return this.role == OrganizationUserData.role.ADMIN;
+    return this.role == Role.ADMIN;
   }
 
   get isOwner() {
-    return this.role == OrganizationUserData.role.OWNER;
+    return this.role == Role.OWNER;
   }
 }
 
-export class CurrentUser extends EntityWithDates implements CurrentUserData {
+export class CurrentUser extends EntityWithDates {
   firstName: string;
   lastName: string;
   email: string;
@@ -36,6 +35,23 @@ export class CurrentUser extends EntityWithDates implements CurrentUserData {
   roles: CurrentUserRole[] = [];
 
   constructor(data?: Partial<CurrentUser>) {
+    super();
+    if (data) assign(this, data);
+    makeObservable(this);
+  }
+}
+
+export class LoginResult {
+  userLocked: boolean;
+  loginFailed: boolean;
+}
+
+export class UserLogin extends EntityWithDates {
+  parentId?: number;
+  token: string;
+  userId: number;
+
+  constructor(data?: Partial<UserLogin>) {
     super();
     if (data) assign(this, data);
     makeObservable(this);

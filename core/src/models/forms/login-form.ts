@@ -1,9 +1,8 @@
-import { LoginData } from "core/api";
 import { notEmpty, validEmail } from "core/validation";
 import { action, makeObservable, observable } from "mobx";
 import Form from "./form";
 
-export default class LoginForm extends Form implements LoginData {
+export default class LoginForm extends Form {
   @observable email: string;
   @observable password: string;
 

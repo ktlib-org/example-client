@@ -58,7 +58,7 @@ abstract class ItemStore<T extends Entity> extends Store {
 
   @action.bound
   async findOrLoad(id: number): Promise<T> {
-    return this.find(id) || (await this.load(id));
+    return this.find(id) || this.update(await this.load(id));
   }
 
   idOrObject(idOrObject: number | T): T {

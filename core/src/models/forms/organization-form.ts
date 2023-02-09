@@ -1,9 +1,8 @@
-import { OrganizationCreate, OrganizationUpdate } from "core/api";
 import { isNotBlank } from "core/utils";
 import { action, makeObservable, observable } from "mobx";
 import Form from "./form";
 
-export default class OrganizationForm extends Form implements OrganizationCreate, OrganizationUpdate {
+export default class OrganizationForm extends Form {
   @observable id: number;
   @observable name: string;
 

@@ -1,10 +1,9 @@
-import { InviteCreate, OrganizationUserData } from "core/api";
 import { Role } from "core/models/organization";
 import { notEmpty, validEmail } from "core/validation";
 import { action, makeObservable, observable } from "mobx";
 import Form from "./form";
 
-export default class InviteForm extends Form implements InviteCreate {
+export default class InviteForm extends Form {
   @observable firstName: string;
   @observable lastName: string;
   @observable email: string;
@@ -22,6 +21,6 @@ export default class InviteForm extends Form implements InviteCreate {
     this.email = "";
     this.firstName = "";
     this.lastName = "";
-    this.role = OrganizationUserData.role.USER;
+    this.role = Role.USER;
   }
 }

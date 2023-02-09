@@ -20,6 +20,8 @@ const specialFormKeys = [
   "ignoreOnPostFields",
 ];
 
+export type FormData<T extends Form> = Omit<T, keyof Form>;
+
 export default class Form {
   @observable errors: { [k: string]: string[] } = {};
   @observable isSubmitting: boolean = false;
@@ -52,7 +54,7 @@ export default class Form {
   }
 
   getErrors(field?: keyof this) {
-    return field ? this.errors[field as string] || [] : _.keys(this.errors).flatMap((k) => this.errors[k]);
+    return field ? this.errors[field as string] || [] : _.flatMap(_.keys(this.errors), (k) => this.errors[k]);
   }
 
   errorText(field?: keyof this) {
@@ -149,11 +151,11 @@ export default class Form {
         data[key] = value === "" && _.includes(this.emptyToNull, key) ? null : value;
       }
     });
-    return data as Omit<this, keyof Form>;
+    return data as FormData<this>;
   }
 
   getPostData() {
-    return _.omit(this.getData(), this.ignoreOnPostFields) as Omit<this, keyof Form>;
+    return _.omit(this.getData(), this.ignoreOnPostFields) as FormData<this>;
   }
 
   hasChanged() {
@@ -176,7 +178,7 @@ export default class Form {
   }
 
   @action
-  async submit<T>(submit: (data: Omit<this, keyof Form>) => Promise<T>, forceSubmit?: boolean): Promise<T> {
+  async submit<T>(submit: (data: FormData<this>) => Promise<T>, forceSubmit?: boolean): Promise<T> {
     this.isSubmitting = true;
     try {
       await this.validate();
@@ -190,8 +192,8 @@ export default class Form {
     } catch (e) {
       runInAction(() => {
         this.isSubmitting = false;
-        if (e.status == 400 && e.body?.errors) {
-          this.errors = this.convertValidationErrors(e.body.errors);
+        if (e.isValidationError) {
+          this.errors = this.convertValidationErrors(e.validationErrors);
           return null;
         }
       });

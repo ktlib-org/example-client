@@ -1,5 +1,5 @@
-import { OrganizationUserData } from "core/api";
 import Select from "./select";
+import { Role } from "core/models/organization";
 
 interface Props {
   id?: string;
@@ -8,11 +8,7 @@ interface Props {
   onBlur?: () => any;
 }
 
-const options = [
-  OrganizationUserData.role.USER.toString(),
-  OrganizationUserData.role.ADMIN.toString(),
-  OrganizationUserData.role.OWNER.toString(),
-];
+const options = [Role.USER.toString(), Role.ADMIN.toString(), Role.OWNER.toString()];
 
 const RoleSelect = (props: Props) => <Select {...props} options={options} />;
 

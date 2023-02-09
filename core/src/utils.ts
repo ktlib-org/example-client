@@ -35,7 +35,7 @@ export function delay(delayTime: number) {
 }
 
 export function autoRerun(action: () => any, freqencyInSeconds: number) {
-  var keepRunning = true;
+  let keepRunning = true;
 
   const doCall = () => {
     try {

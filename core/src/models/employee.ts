@@ -1,9 +1,8 @@
-import { UserDataAll, UserRoleData } from "core/api";
 import { computed } from "mobx";
-import { EntityWithDates } from "./entity";
+import { Entity, EntityWithDates } from "./entity";
 import { Role } from "./organization";
 
-export class User extends EntityWithDates implements UserDataAll {
+export class User extends EntityWithDates {
   firstName: string;
   lastName: string;
   email: string;
@@ -20,8 +19,18 @@ export class User extends EntityWithDates implements UserDataAll {
   }
 }
 
-export class UserRole extends EntityWithDates implements UserRoleData {
+export class UserRole extends EntityWithDates {
   organizationId: number;
   userId: number;
   role: Role;
+}
+
+export class UserLoginData extends Entity {
+  userId: number;
+  parentId: number;
+  valid: boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  employee: boolean;
 }

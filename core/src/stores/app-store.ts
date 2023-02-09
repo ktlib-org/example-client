@@ -1,15 +1,14 @@
-import { CurrentUserData, EmployeeService, LoginResult, OpenAPI, UserLoginData, UserService } from "core/api";
-import { API_URL, ButtonColor } from "core/constants";
+import { ButtonColor } from "core/constants";
 import EmailForm from "core/models/forms/email-form";
 import LoginForm from "core/models/forms/login-form";
 import PasswordForm from "core/models/forms/password-form";
 import SignupForm from "core/models/forms/signup-form";
 import UserProfileForm from "core/models/forms/user-profile-form";
-import { CurrentUser, CurrentUserRole } from "core/models/user";
-import { toType } from "core/serialization";
+import { CurrentUser, CurrentUserRole, LoginResult, UserLogin } from "core/models/user";
 import { getOrgId, getUserToken, setOrgId, setUserToken, Storage } from "core/storage";
 import { action, makeObservable, observable, runInAction } from "mobx";
 import { ModalState, Store } from "./store";
+import { setApiOrganizationId, setApiToken, UserApi } from "core/api";
 
 export default class AppStore extends Store {
   @observable currentUser: CurrentUser = null;
@@ -28,10 +27,6 @@ export default class AppStore extends Store {
     super();
     makeObservable(this);
     this.clearStores = clearStores;
-    OpenAPI.BASE = API_URL;
-    OpenAPI.TOKEN = async () => this.userToken;
-    OpenAPI.HEADERS = async () =>
-      this.currentRole ? { Organization: this.currentRole.organizationId.toString() } : {};
   }
 
   @action
@@ -56,12 +51,13 @@ export default class AppStore extends Store {
   @action
   private setUserToken(token: string) {
     this.userToken = token;
+    setApiToken(token);
     return token;
   }
 
   async loadCurrentUser() {
     try {
-      const user = this.setCurrentUser(await UserService.currentUser());
+      const user = this.setCurrentUser(await UserApi.currentUser());
 
       if (user.roles.length > 0) {
         const orgId = await getOrgId();
@@ -69,7 +65,7 @@ export default class AppStore extends Store {
         this.setOrganization(org?.organizationId || user.roles[0].organizationId);
       }
 
-      const isEmployee = await EmployeeService.isEmployee();
+      const isEmployee = await UserApi.isEmployee();
 
       runInAction(() => (this.isEmployee = isEmployee));
 
@@ -81,8 +77,8 @@ export default class AppStore extends Store {
   }
 
   @action
-  private setCurrentUser(data: CurrentUserData) {
-    return (this.currentUser = toType(data as any, CurrentUser));
+  private setCurrentUser(data: CurrentUser) {
+    return (this.currentUser = data);
   }
 
   @action
@@ -90,24 +86,30 @@ export default class AppStore extends Store {
     const newRole = this.currentUser.roles.find((role) => role.organizationId == orgId) || this.currentUser.roles[0];
 
     if (newRole.organizationId != this.currentRole?.organizationId) {
-      setOrgId(newRole.organizationId);
-      this.clearStores();
-      this.currentRole = newRole;
+      this.setCurrentRole(newRole);
     }
   }
 
   @action
+  private setCurrentRole(role: CurrentUserRole | null) {
+    this.currentRole = role;
+    setOrgId(role?.organizationId);
+    setApiOrganizationId(role?.organizationId);
+    this.clearStores();
+  }
+
+  @action
   async clearUser() {
-    this.currentUser = null;
-    this.currentRole = null;
+    this.setCurrentUser(null);
+    this.setCurrentRole(null);
     await setUserToken((this.userToken = null));
   }
 
   @action
   async login(form: LoginForm): Promise<LoginResult> {
-    return form.submit(async (data) => {
+    return form.submit(async (body) => {
       try {
-        await this.handleUserLogin(await UserService.login(data));
+        await this.handleUserLogin(await UserApi.login(body));
         form.clearFormData();
         return { userLocked: false, loginFailed: false };
       } catch (e: any) {
@@ -121,7 +123,7 @@ export default class AppStore extends Store {
   }
 
   @action
-  async handleUserLogin(userLogin: UserLoginData) {
+  async handleUserLogin(userLogin: UserLogin) {
     try {
       await setUserToken((this.userToken = userLogin.token));
       return this.loadCurrentUser();
@@ -133,15 +135,15 @@ export default class AppStore extends Store {
   }
 
   forgotPassword(form: EmailForm) {
-    return form.submit(async (data) => {
-      await UserService.forgotPassword(data.email);
+    return form.submit(async ({ email }) => {
+      await UserApi.forgotPassword(email);
       form.clearFormData();
     });
   }
 
   signup(form: SignupForm) {
     return form.submit(async (data) => {
-      await UserService.signup(data);
+      await UserApi.signup(data);
       form.clearFormData();
     });
   }
@@ -158,7 +160,7 @@ export default class AppStore extends Store {
   }
 
   async verifyEmail(token: string) {
-    return this.doAction(async () => this.handleUserLogin(await UserService.verifyEmail(token)));
+    return this.doAction(async () => this.handleUserLogin(await UserApi.verifyEmail(token)));
   }
 
   private async doAction(actor: () => Promise<any>) {
@@ -170,29 +172,29 @@ export default class AppStore extends Store {
   }
 
   async tokenLogin(token: string) {
-    return this.doAction(async () => this.handleUserLogin(await UserService.tokenLogin(token)));
+    return this.doAction(async () => this.handleUserLogin(await UserApi.tokenLogin(token)));
   }
 
   updatePassword(form: PasswordForm) {
     return form.submit(async (data) => {
-      await UserService.updatePassword(data);
+      await UserApi.updatePassword(data.password);
       await this.loadCurrentUser();
       form.clearFormData();
     });
   }
 
   async acceptInvite(token: string) {
-    return this.doAction(async () => this.handleUserLogin(await UserService.acceptInvite(token)));
+    return this.doAction(async () => this.handleUserLogin(await UserApi.acceptInvite(token)));
   }
 
   updateUserInfo(form: UserProfileForm) {
-    return form.submit(async (data) => this.setCurrentUser(await UserService.updateUserInfo(data)));
+    return form.submit(async (data) => this.setCurrentUser(await UserApi.updateUser(data)));
   }
 
   @action.bound
   async logout() {
     try {
-      await UserService.logout();
+      await UserApi.logout();
     } catch {}
 
     await this.clear();

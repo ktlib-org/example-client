@@ -3,7 +3,6 @@ import ErrorMessage from "components/error-message";
 import Form from "components/form/form";
 import Input from "components/form/input";
 import Spinner from "components/spinner";
-import { LoginResult } from "core/api";
 import EmailForm from "core/models/forms/email-form";
 import LoginForm from "core/models/forms/login-form";
 import SignupForm from "core/models/forms/signup-form";
@@ -13,6 +12,7 @@ import Page from "./page";
 import { useStore } from "core/react-utils";
 import AppStore from "core/stores/app-store";
 import Icon from "../components/icon";
+import { LoginResult } from "core/models/user";
 
 type Page = "login" | "forgot" | "signup" | "signupSuccess" | "forgotSuccess";
 
