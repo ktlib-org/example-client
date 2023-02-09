@@ -12,6 +12,8 @@ describe("organizationStore", () => {
   beforeEach(() => {
     appStore = new AppStore(() => null);
     UserApi.isEmployee = jest.fn().mockReturnValue(false);
+    OrganizationApi.invites = jest.fn().mockReturnValue([]);
+    OrganizationApi.users = jest.fn().mockReturnValue([]);
     organizationStore = new OrganizationStore(appStore);
   });
 
