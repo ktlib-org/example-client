@@ -10865,7 +10865,7 @@ __metadata:
     "@react-navigation/drawer": ^6.4.1
     "@react-navigation/native": ^6.0.10
     "@react-navigation/native-stack": ^6.6.2
-    "@types/react": 18.0.0
+    "@types/react": 18.0.27
     "@types/react-native": ~0.64.12
     babel-plugin-module-resolver: ^4.1.0
     core: "*"
