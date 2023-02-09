@@ -1,6 +1,6 @@
 import { setStorage } from "core/storage";
 import AppStore, { ActionInfo } from "core/stores/app-store";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import "./app.css";
 import Root from "./pages/root";
 import { WebStorage } from "./utils/web-storage";
@@ -11,5 +11,5 @@ setStorage(new WebStorage());
 
 window.onload = async () => {
   await getStore(AppStore).initialize(getUrlParams<ActionInfo>(window.location.href));
-  ReactDOM.render(<Root />, document.getElementById("app"));
+  createRoot(document.getElementById("app")).render(<Root />);
 };

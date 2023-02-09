@@ -86,6 +86,7 @@ export default class OrganizationStore extends Store {
     return this.loadUsers();
   }
 
+  @action
   async clear() {
     this.organization = null;
     this.invites = [];

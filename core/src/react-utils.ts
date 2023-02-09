@@ -11,7 +11,9 @@ export function useEffect(effect: EffectCallback, deps?: DependencyList) {
 }
 
 export function useInitialEffect(effect: EffectCallback) {
-  return useEffect(effect, []);
+  return useEffect(() => {
+    effect();
+  }, []);
 }
 
 export function useUnloadEffect(unloadEffect: UnloadEffect) {

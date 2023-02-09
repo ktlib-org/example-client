@@ -38,7 +38,7 @@ const Input = observer(({ type, id, field, label, icon, placeholder, onBlur }: P
           !hasError && "focus:ring-indigo-500 focus:border-indigo-500 border-gray-300",
           hasError &&
             "border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500",
-          Icon && "pl-10",
+          icon && "pl-10",
         )}
         placeholder={placeholder}
         aria-invalid={hasError ? "true" : "false"}

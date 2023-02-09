@@ -125,7 +125,8 @@ export default class AppStore extends Store {
   @action
   async handleUserLogin(userLogin: UserLogin) {
     try {
-      await setUserToken((this.userToken = userLogin.token));
+      this.setUserToken(userLogin.token);
+      await setUserToken(userLogin.token);
       return this.loadCurrentUser();
     } catch (e) {
       console.log("Failed to load user", e);
