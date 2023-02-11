@@ -19,10 +19,6 @@ core/src/environment.ts
 core/src/local-host.ts
 dist/
 junit.xml
-core/src/api/core
-core/src/api/models
-core/src/api/services
-core/src/api/index.ts
 
 .expo
 .DS_Store
