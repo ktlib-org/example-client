@@ -4,7 +4,7 @@ import OrganizationStore from "./organization-store";
 import { Store } from "./store";
 
 const stores: { [key: string]: Store } = {};
-const storesToClear: Store[] = [];
+const storesNotToClear: string[] = [AppStore.name];
 
 function createStoresIfNeeded() {
   if (!stores.AppStore) {
@@ -12,13 +12,15 @@ function createStoresIfNeeded() {
     stores.AppStore = appStore;
     stores.OrganizationStore = new OrganizationStore(appStore);
     stores.EmployeeStore = new EmployeeStore();
-
-    storesToClear.push(stores.OrganizationStore, stores.EmployeeStore);
   }
 }
 
 async function clearStores() {
-  await Promise.all(storesToClear.map((s) => s.clear()));
+  await Promise.all(
+    Object.keys(stores)
+      .filter((k) => !storesNotToClear.includes(k))
+      .map((k) => stores[k].clear()),
+  );
 }
 
 export function getStore<T extends Store>(type: new (...args) => T) {

@@ -109,15 +109,18 @@ export default class AppStore extends Store {
   async login(form: LoginForm): Promise<LoginResult> {
     return form.submit(async (body) => {
       try {
-        await this.handleUserLogin(await UserApi.login(body));
+        const result = await UserApi.login(body);
+        if (result.userLogin) {
+          await this.handleUserLogin(result.userLogin);
+        }
         form.clearFormData();
-        return { userLocked: false, loginFailed: false };
+        return result;
       } catch (e: any) {
         if (e.status == 400) {
           return e.body;
         }
         console.log("Login error", e);
-        return { userLocked: false, loginFailed: true };
+        return new LoginResult({ userLocked: false, loginFailed: true });
       }
     });
   }

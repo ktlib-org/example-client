@@ -41,11 +41,6 @@ export class CurrentUser extends EntityWithDates {
   }
 }
 
-export class LoginResult {
-  userLocked: boolean;
-  loginFailed: boolean;
-}
-
 export class UserLogin extends EntityWithDates {
   parentId?: number;
   token: string;
@@ -55,5 +50,16 @@ export class UserLogin extends EntityWithDates {
     super();
     if (data) assign(this, data);
     makeObservable(this);
+  }
+}
+
+export class LoginResult {
+  userLocked: boolean;
+  loginFailed: boolean;
+  @type(UserLogin)
+  userLogin: UserLogin | null;
+
+  constructor(data?: Partial<LoginResult>) {
+    if (data) assign(this, data);
   }
 }
