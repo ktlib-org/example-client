@@ -65,7 +65,11 @@ export default class Api {
   }
 
   static async checkEncoding() {
-    baseEncodeJson = (await Api.get({ path: "/e" })) === 1
+    try {
+      baseEncodeJson = (await Api.get({ path: "/e" })) === 1
+    } catch (e) {
+      return false
+    }
   }
 }
 
