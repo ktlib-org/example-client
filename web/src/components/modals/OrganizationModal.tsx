@@ -44,8 +44,8 @@ const OrganizationModal = observer(() => {
         <Button key={0} color="gray" onClick={hide} text="Cancel" icon="X" />,
       ]}
     >
-      <Form form={form} submit={save}>
-        <Input label="Name" field="name" />
+      <Form form={form}>
+        <Input label="Name" field="name" onEnter={save} />
       </Form>
     </Modal>
   )

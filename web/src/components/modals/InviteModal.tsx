@@ -39,16 +39,16 @@ const InviteModal = observer(() => {
         <Button key={0} color="gray" onClick={hide} text="Cancel" icon="X" />,
       ]}
     >
-      <Form form={form} submit={save}>
+      <Form form={form}>
         <div className="grid grid-cols-1 gap-y-2 gap-x-4 sm:grid-cols-2">
           <div className="sm:col-span-1">
-            <Input label="First Name" field="firstName" />
+            <Input label="First Name" field="firstName" onEnter={save} />
           </div>
           <div className="sm:col-span-1">
-            <Input label="Last Name" field="lastName" />
+            <Input label="Last Name" field="lastName" onEnter={save} />
           </div>
           <div className="sm:col-span-1">
-            <Input label="Email" type="email" field="email" />
+            <Input label="Email" type="email" field="email" onEnter={save} />
           </div>
           <div className="sm:col-span-1">
             <RoleSelect label="Role" field="role" />

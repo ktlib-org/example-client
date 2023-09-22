@@ -38,9 +38,9 @@ const UpdatePasswordModal = observer(() => {
         <Button key={0} color="gray" onClick={hide} text="Cancel" icon="X" />,
       ]}
     >
-      <Form form={form} submit={save}>
-        <Input type="password" label="New Password" field="password" />
-        <Input type="password" label="Confirm Password" field="passwordConfirm" />
+      <Form form={form}>
+        <Input type="password" label="New Password" field="password" onEnter={save} />
+        <Input type="password" label="Confirm Password" field="passwordConfirm" onEnter={save} />
       </Form>
     </Modal>
   )
