@@ -9,7 +9,7 @@ import Invite from "core/models/organization/Invite"
 import OrganizationUser from "core/models/organization/OrganizationUser"
 import { beforeEach, describe, expect, it, mock } from "bun:test"
 import Role from "core/models/organization/Role"
-import { CurrentUser } from "core/models/user/CurrentUser"
+import CurrentUser from "core/models/user/CurrentUser"
 import CurrentUserRole from "core/models/user/CurrentUserRole"
 
 let appStore: AppStore

@@ -3,7 +3,7 @@ import { makeObservable } from "mobx"
 import Entity from "core/models/Entity"
 import CurrentUserRole from "core/models/user/CurrentUserRole"
 
-export class CurrentUser extends Entity {
+export default class CurrentUser extends Entity {
   firstName: string
   lastName: string
   email: string
