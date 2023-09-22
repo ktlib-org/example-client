@@ -1,8 +1,8 @@
-import Layout from "components/layout";
-import { Route, Routes } from "react-router";
-import EmployeeHomePage from "./employee-home-page";
-import OrganizationsPage from "./organizations-page";
-import UsersPage from "./users-page";
+import Layout from "../../components/Layout"
+import { Route, Routes } from "react-router"
+import EmployeeHomePage from "./EmployeeHomePage"
+import OrganizationsPage from "./OrganizationsPage"
+import UsersPage from "./UsersPage"
 
 const Employee = () => (
   <Layout employee>
@@ -12,6 +12,6 @@ const Employee = () => (
       <Route path="/organizations" element={<OrganizationsPage />} />
     </Routes>
   </Layout>
-);
+)
 
-export default Employee;
+export default Employee

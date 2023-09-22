@@ -1,13 +1,24 @@
 {
   "extends": "../tsconfig.json",
-    "compilerOptions": {
-      "jsx": "react-jsx",
-      "lib": ["es2017", "dom"],
-      "baseUrl": "./src",
-      "paths": {
-        "core/*": ["../../core/src/*"],
-      },
-      "types": ["react", "jest", "chai"]
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": "./src",
+    "paths": {
+      "core/*": [
+        "../../core/src/*"
+      ]
     },
-    "include": ["./src", "./test"]
-  }
+    "types": [
+      "react",
+      "bun-types"
+    ]
+  },
+  "include": [
+    "./src",
+    "./test"
+  ]
+}

@@ -1,75 +1,75 @@
 export interface Storage {
-  setUserToken(userToken: string): Promise<void>;
+  setUserToken(userToken: string): Promise<void>
 
-  getUserToken(): Promise<string>;
+  getUserToken(): Promise<string>
 
-  setOrgId(orgId: number): Promise<void>;
+  setOrgId(orgId: string): Promise<void>
 
-  getOrgId(): Promise<number>;
+  getOrgId(): Promise<string>
 
-  setCompactSidebar(value: boolean): Promise<void>;
+  setCompactSidebar(value: boolean): Promise<void>
 
-  getCompactSidebar(): Promise<boolean>;
+  getCompactSidebar(): Promise<boolean>
 }
 
-let storageImpl: Storage;
+let storageImpl: Storage
 
 export function setStorage(storage: Storage) {
-  storageImpl = storage;
+  storageImpl = storage
 }
 
 export function setUserToken(userToken: string) {
-  return storageImpl.setUserToken(userToken);
+  return storageImpl.setUserToken(userToken)
 }
 
 export function getUserToken() {
-  return storageImpl.getUserToken();
+  return storageImpl.getUserToken()
 }
 
-export function setOrgId(orgId: number) {
-  return storageImpl.setOrgId(orgId);
+export function setOrgId(orgId: string) {
+  return storageImpl.setOrgId(orgId)
 }
 
 export function getOrgId() {
-  return storageImpl.getOrgId();
+  return storageImpl.getOrgId()
 }
 
 export function setCompactSidebar(value: boolean) {
-  return storageImpl.setCompactSidebar(value);
+  return storageImpl.setCompactSidebar(value)
 }
 
 export function getCompactSidebar() {
-  return storageImpl.getCompactSidebar();
+  return storageImpl.getCompactSidebar()
 }
 
 class FakeStorage implements Storage {
-  userToken: string;
-  orgId: number;
-  compactSideBar: boolean;
+  userToken: string
+  orgId: string
+  compactSideBar: boolean
 
   async setUserToken(userToken: string): Promise<void> {
-    this.userToken = userToken;
+    this.userToken = userToken
   }
 
   async getUserToken(): Promise<string> {
-    return this.userToken;
+    return this.userToken
   }
 
-  async setOrgId(orgId: number): Promise<void> {
-    this.orgId = orgId;
+  async setOrgId(orgId: string): Promise<void> {
+    this.orgId = orgId
   }
 
-  async getOrgId(): Promise<number> {
-    return this.orgId;
+  async getOrgId(): Promise<string> {
+    return this.orgId
   }
 
   async setCompactSidebar(value: boolean): Promise<void> {
-    this.compactSideBar = value;
+    this.compactSideBar = value
   }
 
   async getCompactSidebar(): Promise<boolean> {
-    return this.compactSideBar;
+    return this.compactSideBar
   }
 }
 
-setStorage(new FakeStorage());
+setStorage(new FakeStorage())

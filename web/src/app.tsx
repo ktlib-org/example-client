@@ -1,15 +1,22 @@
-import { setStorage } from "core/storage";
-import AppStore, { ActionInfo } from "core/stores/app-store";
-import { createRoot } from "react-dom/client";
-import "./app.css";
-import Root from "./pages/root";
-import { WebStorage } from "./utils/web-storage";
-import { getUrlParams } from "./utils/web-utils";
-import { getStore } from "core/stores";
+import { setStorage } from "core/storage"
+import { createRoot } from "react-dom/client"
+import Root from "./pages/AppRoot"
+import WebStorage from "./utils/WebStorage"
+import { getUrlParams } from "./utils/web-utils"
+import ActionInfo from "core/models/ActionInfo"
+import { createStores, StoresContext } from "core/react-utils"
+import "./app.css"
 
-setStorage(new WebStorage());
+setStorage(new WebStorage())
 
-window.onload = async () => {
-  await getStore(AppStore).initialize(getUrlParams<ActionInfo>(window.location.href));
-  createRoot(document.getElementById("app")).render(<Root />);
-};
+async function init() {
+  const stores = await createStores(getUrlParams<ActionInfo>(window.location.href))
+
+  createRoot(document.getElementById("app")).render(
+    <StoresContext.Provider value={stores}>
+      <Root />
+    </StoresContext.Provider>,
+  )
+}
+
+init()

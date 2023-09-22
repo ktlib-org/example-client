@@ -1,8 +1,8 @@
-import ConfirmationModal from "./confirmation-modal";
-import InviteModal from "./invite-modal";
-import OrganizationModal from "./organization-modal";
-import UpdatePasswordModal from "./update-password-modal";
-import UserProfileModal from "./user-profile-modal";
+import ConfirmationModal from "./ConfirmationModal"
+import InviteModal from "./InviteModal"
+import OrganizationModal from "./OrganizationModal"
+import UpdatePasswordModal from "./UpdatePasswordModal"
+import UserProfileModal from "./UserProfileModal"
 
 export default function Modals() {
   return (
@@ -13,5 +13,5 @@ export default function Modals() {
       <OrganizationModal />
       <InviteModal />
     </>
-  );
+  )
 }

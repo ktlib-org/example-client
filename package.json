@@ -1,5 +1,5 @@
 {
-  "name": "react-base",
+  "name": "base-client",
   "private": true,
   "version": "1.0.0",
   "workspaces": [
@@ -8,31 +8,25 @@
     "web"
   ],
   "scripts": {
-    "postinstall": "yarn workspace core run env",
-    "test": "yarn core.test && yarn web.test && yarn mobile.test",
-    "core.test": "yarn workspace core run test",
-    "web.test": "yarn workspace web run test",
-    "mobile.test": "yarn workspace mobile run test",
-    "tsc": "yarn workspace core run tsc && yarn workspace web run tsc && yarn workspace mobile run tsc",
-    "env.local": "yarn workspace core run env.local",
-    "env.dev": "yarn workspace core run env.dev",
-    "env.prod": "yarn workspace core run env.prod",
-    "web.start": "yarn workspace web run start",
-    "web.local": "yarn env.local && web.start",
-    "web.dev": "yarn env.dev && web.start",
-    "web.prod": "yarn env.prod && web.start",
-    "web.build": "yarn workspace web run build",
-    "web.preview": "yarn workspace web run preview",
-    "mobile.start": "yarn workspace mobile run start",
-    "mobile.start.clear": "yarn workspace mobile run start.clear",
-    "mobile.ios": "yarn workspace mobile run ios",
-    "mobile.android": "yarn workspace mobile run android"
+    "test": "bun run core.test && bun run web.test && bun run mobile.test",
+    "core.test": "bun test --cwd core",
+    "web.test": "bun test --cwd web",
+    "mobile.test": "bun test --cwd mobile",
+    "tsc": "bun run --cwd core tsc && bun run --cwd web tsc && bun run --cwd mobile tsc",
+    "env": "bun run --cwd core env",
+    "env.local": "bun run --cwd core env.local",
+    "env.dev": "bun run --cwd core env.dev",
+    "env.prod": "bun run --cwd core env.prod",
+    "web.start": "bun run --cwd web vite",
+    "web.local": "bun run env.local && bun run web.start",
+    "web.dev": "bun run env.dev && bun run web.start",
+    "web.prod": "bun run env.prod && bun run web.start",
+    "web.build": "bun run --cwd web build",
+    "web.preview": "bun run web.build; bun run --cwd web preview",
+    "mobile.start": "bun run --cwd mobile start",
+    "mobile.start.clear": "bun run --cwd mobile start.clear",
+    "mobile.ios": "bun run --cwd mobile ios",
+    "mobile.android": "bun run --cwd mobile android"
   },
-  "devDependencies": {
-    "typescript": "^4.5.5"
-  },
-  "resolutions": {
-    "@types/react": "~18.0.0"
-  },
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "bunx@3.2.0"
 }

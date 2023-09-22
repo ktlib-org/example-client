@@ -1,25 +1,26 @@
-import { registerRootComponent } from "expo";
-import { activateKeepAwake } from "expo-keep-awake";
-import "expo/build/Expo.fx";
-import Navigation from "./screens/navigation";
-import { NativeBaseProvider } from "native-base";
-import { getStore } from "core/stores";
-import AppStore from "core/stores/app-store";
-
-const app = () => (
-  <NativeBaseProvider>
-    <Navigation />
-  </NativeBaseProvider>
-);
+import { registerRootComponent } from "expo"
+import { activateKeepAwake } from "expo-keep-awake"
+import "expo/build/Expo.fx"
+import Navigation from "./screens/Navigation"
+import { NativeBaseProvider } from "native-base"
+import { createStores, StoresContext } from "core/react-utils"
 
 async function init() {
   if (__DEV__) {
-    activateKeepAwake();
+    activateKeepAwake()
   }
 
-  await getStore(AppStore).initialize();
+  const stores = await createStores()
 
-  registerRootComponent(app);
+  const app = () => (
+    <NativeBaseProvider>
+      <StoresContext.Provider value={stores}>
+        <Navigation />
+      </StoresContext.Provider>
+    </NativeBaseProvider>
+  )
+
+  registerRootComponent(app)
 }
 
-init();
+init()
