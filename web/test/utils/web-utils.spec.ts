@@ -1,8 +1,5 @@
 import { getUrlParams } from "utils/web-utils"
 import { describe, expect, it } from "bun:test"
-import Api from "core/Api"
-
-Api.name
 
 describe("getUrlParams", () => {
   it("should parse multiple params", () => {

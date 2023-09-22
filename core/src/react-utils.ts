@@ -91,8 +91,8 @@ class Field {
   }
 }
 
-export function useFormField(name: string) {
-  const form = useForm()
+export function useFormField(name: string, formToUse?: Form) {
+  const form = formToUse || useForm()
   form.validField(name)
   return new Field(form, name as keyof Form)
 }

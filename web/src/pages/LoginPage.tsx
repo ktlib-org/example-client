@@ -1,7 +1,5 @@
 import Button from "../components/Button"
 import ErrorMessage from "../components/ErrorMessage"
-import Form from "../components/form/Form"
-import Input from "../components/form/Input"
 import Spinner from "../components/Spinner"
 import EmailForm from "core/models/EmailForm"
 import LoginForm from "core/models/user/LoginForm"
@@ -12,6 +10,8 @@ import Page from "./Page"
 import { useStore } from "core/react-utils"
 import Icon from "../components/Icon"
 import LoginResult from "core/models/user/LoginResult"
+import Form from "../components/form/Form"
+import Input from "../components/form/Input"
 
 type Page = "login" | "forgot" | "signup" | "signupSuccess" | "forgotSuccess"
 
@@ -73,12 +73,12 @@ const Login = observer(({ change }: PageProps) => {
         </div>
       </div>
       <div className="mt-10">
-        <Form form={loginForm} submit={submit}>
+        <Form form={loginForm}>
           <div className="flex flex-col mb-6">
-            <Input type="email" label="Email" field="email" icon="At" />
+            <Input type="email" label="Email" field="email" icon="At" onEnter={submit} />
           </div>
           <div className="flex flex-col mb-6">
-            <Input type="password" field="password" label="Password" icon="Padlock" />
+            <Input type="password" field="password" label="Password" icon="Padlock" onEnter={submit} />
           </div>
 
           <div className="flex items-center mb-6 -mt-4">
@@ -130,9 +130,9 @@ const Forgot = observer(({ change }: PageProps) => {
 
   return (
     <div>
-      <Form form={forgotForm} submit={submit}>
+      <Form form={forgotForm}>
         <h3>To reset your password, enter your email below</h3>
-        <Input type="email" label="Email" field="email" icon="At" />
+        <Input type="email" label="Email" field="email" icon="At" onEnter={submit} />
         <div className="my-8">
           <Button icon="ArrowRightOnSquare" text="Submit" onClick={submit} submitting={forgotForm.isSubmitting} />
           <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
@@ -174,11 +174,11 @@ const SignupPage = observer(({ change }: PageProps) => {
   }
 
   return (
-    <Form form={signupForm} submit={submit}>
+    <Form form={signupForm}>
       <h3>Signup</h3>
-      <Input label="First Name" field="firstName" />
-      <Input label="Last Name" field="lastName" />
-      <Input type="email" label="Email" field="email" />
+      <Input label="First Name" field="firstName" onEnter={submit} />
+      <Input label="Last Name" field="lastName" onEnter={submit} />
+      <Input type="email" label="Email" field="email" onEnter={submit} />
       <div className="my-8">
         <Button icon="ArrowRightOnSquare" text="Submit" onClick={submit} submitting={signupForm.isSubmitting} />
         <Button icon="ArrowLeftCircle" className="mt-16" text="Back to Login" onClick={back} />
@@ -205,9 +205,11 @@ const SignupSuccess = ({ change }: PageProps) => {
 
 const ActionPage = observer(() => {
   const {
-    actionInfo: { action },
-    actionInvalid,
-  } = useStore().appStore
+    appStore: {
+      actionInfo: { action },
+      actionInvalid,
+    },
+  } = useStore()
 
   const back = () => {
     window.location.href = "/"

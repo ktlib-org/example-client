@@ -1,15 +1,15 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { EMPTY_FUNC } from "core/constants";
-import { observer } from "mobx-react-lite";
-import { Fragment, MutableRefObject } from "react";
+import { Dialog, Transition } from "@headlessui/react"
+import { EMPTY_FUNC } from "core/constants"
+import { observer } from "mobx-react-lite"
+import { Fragment, MutableRefObject } from "react"
 
 interface Props {
-  open: boolean;
-  title: string | JSX.Element;
-  description?: string | JSX.Element;
-  children: JSX.Element | JSX.Element[] | string;
-  buttons?: JSX.Element | JSX.Element[];
-  initialFocus?: MutableRefObject<HTMLElement | null> | undefined;
+  open: boolean
+  title: string | JSX.Element
+  description?: string | JSX.Element
+  children: JSX.Element | JSX.Element[] | string
+  buttons?: JSX.Element | JSX.Element[]
+  initialFocus?: MutableRefObject<HTMLElement | null> | undefined
 }
 
 const Modal = observer(({ open, title, description, initialFocus, children, buttons }: Props) => {
@@ -45,7 +45,7 @@ const Modal = observer(({ open, title, description, initialFocus, children, butt
               </div>
             </div>
             {buttons && (
-              <div className="bg-gray-100 px-4 py-3 space-y-2 sm:px-6 sm:flex sm:flex-row-reverse space-x-2 sm:space-y-0 space-x-reverse">
+              <div className="bg-gray-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse space-x-2 sm:space-y-0 space-x-reverse">
                 {buttons}
               </div>
             )}
@@ -53,7 +53,7 @@ const Modal = observer(({ open, title, description, initialFocus, children, butt
         </div>
       </Dialog>
     </Transition>
-  );
-});
+  )
+})
 
-export default Modal;
+export default Modal
