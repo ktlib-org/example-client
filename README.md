@@ -57,14 +57,3 @@ yarn web.test
 yarn mobile.test
 ```
 
-To download a new version of the OpenAPI spec run:
-
-```
-yarn updateOpenApi
-```
-
-The API will be generated automatically when you install or update the OpenAPI spec, but you can do it manually by running:
-
-```
-yarn genApi
-```
