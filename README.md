@@ -4,33 +4,30 @@ Web Application
 
 ## Setup
 
-This project requires node 16.10 or higher.
-
-To install latest Yarn, run:
+This project requires Bun. To install bun run:
 
 ```bash
-corepack enable
-yarn set version stable
+curl -fsSL https://bun.sh/install | bash
 ```
 
 To install dependencies, run:
 
 ```bash
-yarn
+bun install
 ```
 
 Run a specific web environment using:
 
 ```bash
-yarn web.local
-yarn web.dev
-yarn web.prod
+bun run web.local
+bun run web.dev
+bun run web.prod
 ```
 
 To run the current environment you have selected:
 
 ```
-yarn web.start
+bun run web.start
 ```
 
 ## Production
@@ -38,7 +35,7 @@ yarn web.start
 To build the web app for production, run:
 
 ```bash
-yarn web.build
+bun run web.build
 ```
 
 ## Running Tests
@@ -46,14 +43,14 @@ yarn web.build
 To run the unit tests, run:
 
 ```
-yarn test
+bun run test
 ```
 
 You can also run tests for a specific workspace like this:
 
 ```
-yarn core.test
-yarn web.test
-yarn mobile.test
+bun run core.test
+bun run web.test
+bun run mobile.test
 ```
 
